@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-
+from django.contrib.auth  import authenticate,login,logout
 from back.forms.menu import MenuForm
 from back.forms.contenttype import ContentTypeForm
 
@@ -14,7 +14,15 @@ def sayBye(request):
 })
 
 
-def login(request):
+def userLogin(request):
+    if request.method == "POST":
+        userName  = request.POST['username']
+        password = request.POST['password']
+        user =  authenticate(request,username=userName,password=password)
+        if user is not None:
+            return JsonResponse({"message":"Success"})
+        else:
+            return JsonResponse({"status":"failed","message":"Bad Credentials"})
     return render(request,'back/login.html')
 
 def createUser(request):

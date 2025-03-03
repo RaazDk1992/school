@@ -8,6 +8,7 @@ def proxy_view(request,path):
             response = requests.get(target_url, params=request.GET)
         elif request.method == "POST":
             response = requests.post(target_url,data=request.POST)
+
         else:
             return JsonResponse({"error": "Method not allowed"}, status=405)
         return JsonResponse(response.json(), safe=False)

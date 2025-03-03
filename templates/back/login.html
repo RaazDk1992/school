@@ -9,20 +9,21 @@
             <img class="card-img-top" src="{% static 'img/schoolx.png'%}" style="width:15rem;height:10rem;object-fit:contain;">
         </div>
         <div class="card-body">
-          <form class="">
+          <form method="POST" class="" id="login-form">
+            {% csrf_token%}
             <div class="form-row mb-3">
                     <div class="">
-                    <label for="inputEmail4">Email</label>
-                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                    <label for="username">Email</label>
+                    <input type="username" class="form-control" Name="username" id="username" placeholder="Email">
                     </div>
                     <div class="">
-                    <label for="inputPassword4">Password</label>
-                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" Name="password" id="password" placeholder="Password">
                     </div>
               </div>
 
               <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Login</button>
               </div>
             
           </form>
@@ -30,5 +31,30 @@
       </div>
 
 </div>
+
+<script>
+
+    function getCsrfToken() {
+        return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    }
+
+    function submitLogin() {
+        const form = document.getElementById("login-form");
+        const formData = new FormData(form);  // Collects all form fields
+
+        axios.post("/proxy/login/", formData, {
+            headers: { "Content-Type": "multipart/form-data",
+                        "X-CSRFToken": getCsrfToken() }  
+        })
+        .then(response => {
+            console.log("Response:", response.data);
+            alert("Login successful: " + JSON.stringify(response.data));
+        })
+        .catch(error => {
+            console.error("Error:", error.response ? error.response.data : error);
+            alert("Login failed: " + (error.response ? error.response.data : "Unknown error"));
+        });
+    }
+</script>
 
 {%endblock%}
