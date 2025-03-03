@@ -5,7 +5,28 @@
 }
 
 .form-control:focus {
-    outline: none !important; /* Removes Bootstrap's thick outline */
-    border: 1px solid var(--primary-color-0) !important; /* Thin blue border */
+    outline: none !important; 
+    border: 1px solid var(--primary-color-0) !important; 
     box-shadow: 0 0 5px color-mix(in srgb, var(--primary-color) 50%, transparent) !important;
+}
+.form-check-input:focus {
+    box-shadow: none !important;
+    border-color: #007BFF !important; /* Change to your desired border color */
+}
+
+/* Change border color of the checkbox */
+.form-check-input {
+    border: 1px solid #007BFF !important; /* Custom border color */
+    width: 18px;
+    height: 18px;
+    accent-color: #007BFF; /* Change tick color */
+    cursor: pointer;
+}
+.form-check-input:hover {
+    transform: scale(1.1);
+}
+
+/* Change border color when checked */
+.form-check-input:checked {
+    border: 1px solid #28a745 !important; /* Green border when checked */
 }

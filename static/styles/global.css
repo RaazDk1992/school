@@ -2,6 +2,7 @@
     --primary-color-0:#0052D4;
     --primary-color-1: #4364F7;
     --primary-color-2: #6FB1FC;
+    --color-inactive:#8f8f8f;
 }
 
 .form-control:focus {
@@ -9,3 +10,20 @@
     border: 1px solid var(--primary-color-0) !important; 
     box-shadow: 0 0 5px color-mix(in srgb, var(--primary-color) 50%, transparent) !important;
 }
+.form-check-input:focus {
+    box-shadow: none !important;
+    border-color: #007BFF !important; /* Change to your desired border color */
+}
+
+
+.form-check-input {
+    border: 1px solid var(--color-inactive)!important;
+    width: 18px;
+    height: 18px;
+    accent-color: #007BFF;
+    cursor: pointer;
+}
+.form-check-input:hover {
+    transform: scale(1.1);
+}
+
