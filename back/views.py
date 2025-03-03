@@ -10,4 +10,4 @@ def sayBye(request):
 
 def addMenu(request):
     menuForm = MenuForm()
-    return render(request,'back/addmenu.html')
+    return render(request,'back/addmenu.html',{'form':menuForm})

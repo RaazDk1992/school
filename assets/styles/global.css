@@ -1,0 +1,11 @@
+:root{
+    --primary-color-0:#0052D4;
+    --primary-color-1: #4364F7;
+    --primary-color-2: #6FB1FC;
+}
+
+.form-control:focus {
+    outline: none !important; /* Removes Bootstrap's thick outline */
+    border: 1px solid var(--primary-color-0) !important; /* Thin blue border */
+    box-shadow: 0 0 5px color-mix(in srgb, var(--primary-color) 50%, transparent) !important;
+}

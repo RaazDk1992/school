@@ -1,7 +1,9 @@
 
+@import url('global.css');
 .navbar {
-    background: linear-gradient(90deg, #0052D4, #4364F7, #6FB1FC);
-    height: 80px;
+    position: relative;
+    z-index: 1000;
+    background: linear-gradient(90deg,var(--primary-color-0) ,var(--primary-color-1) ,var(--primary-color-2) );
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
