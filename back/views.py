@@ -1,13 +1,24 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 
 from back.forms.menu import MenuForm
 from back.forms.contenttype import ContentTypeForm
 
 # Create your views here.
 
+
 def sayBye(request):
-    return HttpResponse('Bye')
+    return JsonResponse({
+    "message": "Hello from backend",
+    "status": "success"
+})
+
+
+def login(request):
+    return render(request,'back/login.html')
+
+def createUser(request):
+    return render(request,"back/register.html")
 
 def addMenu(request):
     menuForm = MenuForm()

@@ -2,6 +2,7 @@
     --primary-color-0:#0052D4;
     --primary-color-1: #4364F7;
     --primary-color-2: #6FB1FC;
+    --color-inactive:#8f8f8f;
 }
 
 .form-control:focus {
@@ -14,19 +15,15 @@
     border-color: #007BFF !important; /* Change to your desired border color */
 }
 
-/* Change border color of the checkbox */
+
 .form-check-input {
-    border: 1px solid #007BFF !important; /* Custom border color */
+    border: 1px solid var(--color-inactive)!important;
     width: 18px;
     height: 18px;
-    accent-color: #007BFF; /* Change tick color */
+    accent-color: #007BFF;
     cursor: pointer;
 }
 .form-check-input:hover {
     transform: scale(1.1);
 }
 
-/* Change border color when checked */
-.form-check-input:checked {
-    border: 1px solid #28a745 !important; /* Green border when checked */
-}
