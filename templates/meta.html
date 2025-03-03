@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO Meta Tags -->
+    <title>{% block title %}Best School in Surkhet | Management & Science Education in Karnali{% endblock %}</title>
+    <meta name="description" content="Top-ranked school in Surkhet, Karnali Province offering Science and Management education with expert faculty, modern facilities, and career-oriented programs.">
+    <meta name="keywords" content="Best school in Surkhet, Karnali schools, Science college Surkhet, Management college Karnali, Education in Surkhet, Top schools in Karnali, Science and Management courses Surkhet">
+    <meta name="author" content="School Name">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph Meta (For Social Media) -->
+    <meta property="og:title" content="Best School in Surkhet | Science & Management Education">
+    <meta property="og:description" content="Providing quality Science & Management education in Surkhet, Karnali Province. Join the top school in Surkhet for academic excellence.">
+    <meta property="og:image" content="https://yourwebsite.com/school-image.jpg">
+    <meta property="og:url" content="https://yourwebsite.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Top Science & Management School in Surkhet">
+    <meta name="twitter:description" content="Explore the best Science & Management programs in Surkhet, Karnali. Join our school for quality education.">
+    <meta name="twitter:image" content="https://yourwebsite.com/school-image.jpg">
+
+    <!-- Bootstrap & FontAwesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'navbar.css' %}">
+    {% block extra_css %}{% endblock %}
+
+    <!-- Structured Data (Google Schema Markup) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "School Name",
+      "description": "Best school in Surkhet offering Science and Management education with modern teaching methods and expert faculty.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Surkhet",
+        "addressRegion": "Karnali Province",
+        "addressCountry": "Nepal"
+      },
+      "url": "https://yourwebsite.com",
+      "sameAs": [
+        "https://www.facebook.com/your-school",
+        "https://www.instagram.com/your-school"
+      ]
+    }
+    </script>
+</head>
+<body>
+
+    {% include "components/navbar.html" %}  <!-- Include Navbar -->
+
+    <div class="d-flex flex-column min-vh-100">  
+        <main class="flex-grow-1">
+            {% block content %}{% endblock %}
+        </main>
+
+        {% include "components/footer.html" %}  
+    </div>
+
+</body>
+</html>

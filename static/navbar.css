@@ -1,0 +1,23 @@
+
+.navbar {
+    position: relative;
+    z-index: 1000;
+    background: linear-gradient(90deg, #0052D4, #4364F7, #6FB1FC);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-nav .nav-link {
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+    padding-bottom: 5px;
+}
+
+
+.navbar-nav .nav-link.active {
+    border-bottom: 3px solid #fffffd;
+}
+.contact_header{
+    color: white;
+    size: 2rem;
+}
