@@ -40,7 +40,7 @@ class Image(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=200)
     body = models.TextField()
-    image = models.ForeignKey(Image, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='articles/', null=True, blank=True)
     def __str__(self):
         return self.title
 

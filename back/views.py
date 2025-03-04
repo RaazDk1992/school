@@ -37,8 +37,18 @@ def loadDashboard(request):
         
 
 def addArticle(request):
-    aticleForm =  ArticleForm()
-    return render(request,'back/addarticle.html',{'form':aticleForm})
+    if request.user.is_authenticated:
+        if request.method =="POST":
+            form = ArticleForm(request.POST,request.FILES)
+            if form.is_valid():
+                form.save()
+            else:
+                print(form.errors)
+        if request.method =="GET":
+            aticleForm =  ArticleForm()
+            return render(request,'back/addarticle.html',{'form':aticleForm})
+    else:
+        return render(request,"back/addarticle.html")
 
 def createUser(request):
     return render(request,"back/register.html")
