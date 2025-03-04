@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth  import authenticate,login,logout
 from back.forms.menu import MenuForm
-from back.forms.contenttype import ContentTypeForm
+from back.forms.newArticle import ArticleForm
 
 # Create your views here.
 
@@ -12,6 +12,8 @@ def sayBye(request):
     "message": "Hello from backend",
     "status": "success"
 })
+
+
 
 
 def userLogin(request):
@@ -32,15 +34,17 @@ def loadDashboard(request):
             return render(request,"back/dashboard.html")
         else:
             return render(request,"back/login.html")
+        
+
+def addArticle(request):
+    aticleForm =  ArticleForm()
+    return render(request,'back/addarticle.html',{'form':aticleForm})
 
 def createUser(request):
     return render(request,"back/register.html")
 
-def addMenu(request):
-    menuForm = MenuForm()
-    return render(request,'back/contenttype.html',{'form':menuForm})
-def addContentType(request):
-    contentTForm = ContentTypeForm()
-    return render(request,'back/contenttype.html',{'form':contentTForm})
+
+
+  
 
 

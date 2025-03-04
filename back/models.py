@@ -2,6 +2,8 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django_ckeditor_5.fields import CKEditor5Field
+
 
 
 class Profile(models.Model):
@@ -19,22 +21,14 @@ def save_profile(sender,instance, **kwargs):
         instance.profile.save()
 
 
-
-class ContentTypes(models.Model):
-    contentType = models.CharField(max_length=200)
-    is_active = models.BooleanField(default=True)
-    def __str__(self):
-        return self.contentType
-
 class Notices(models.Model):
-    contentType = models.ForeignKey(ContentTypes, on_delete=models.CASCADE)
     noticeTitle = models.CharField(max_length=200)
+    noticeBody = CKEditor5Field(config_name='extends')
     document = models.CharField(max_length=200)
     def __str__(self):
         return self.noticeTitle
 
 class Gallery(models.Model):
-    contentType = models.ForeignKey(ContentTypes,on_delete=models.CASCADE)
     galleryName = models.CharField(max_length=200)
 
     def __str__(self):
@@ -44,9 +38,8 @@ class Image(models.Model):
     image = models.ImageField(upload_to='gallery_images/')  
 
 class Article(models.Model):
-    contentType = models.ForeignKey(ContentTypes,on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    body = models.CharField(max_length=500)
+    body = models.TextField()
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
     def __str__(self):
         return self.title

@@ -1,0 +1,12 @@
+{% extends 'meta.html'%}
+
+{% block content %}
+    <div class="container d-flex align-items-center justify-content-center col-sm-8 ">
+        {{ form.media }}
+        <form method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+        </form>
+    </div>
+{% endblock %}
