@@ -1,0 +1,23 @@
+{% extends 'meta.html'%}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'styles/dashboard.css'%}">
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex">
+
+        <div class="dropup">
+            <button class="btn btn-primary floating-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-plus"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Add An Article</a></li>
+                <li><a class="dropdown-item" href="#">Add A Notice</a></li>
+                <li><a class="dropdown-item" href="#">Add A Gallery</a></li>
+            </ul>
+        </div>
+    
+        
+    </div>
+{% endblock %}

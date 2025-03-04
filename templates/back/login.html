@@ -28,9 +28,6 @@
     </div>
 </div>
 
-<!-- Include iziToast -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 
 <script>
     document.getElementById("login-form").addEventListener("submit", function(event) {
@@ -46,11 +43,12 @@
         const form = document.getElementById("login-form");
         const formData = new FormData(form);
 
-        axios.post("/proxy/login/", formData, {
+        axios.post("/back/login/", formData, {
             headers: { 
-                "Content-Type": "multipart/form-data",
+               "Content-Type": "application/x-www-form-urlencoded",
                 "X-CSRFToken": getCsrfToken() 
-            }
+            },
+            withCredentials:true
         })
         .then(response => {
             iziToast.success({
@@ -62,7 +60,7 @@
             });
 
             setTimeout(() => {
-                window.location.href = "/dashboard"; // Redirect after success
+                window.location.href = "/back/dashboard"; // Redirect after success
             }, 2000);
         })
         .catch(error => {

@@ -18,11 +18,8 @@ from django.contrib import admin
 from django.urls import path,include,re_path
 from django.conf.urls.static import static
 from django.conf import settings
-from back.proxy import proxy_view,proxy_view_with_render
 
 urlpatterns = [
-    re_path(r'^proxy/(?P<path>.*)$',proxy_view , name='proxy_view'),
-    re_path(r'^admin/(?P<path>.*)$',proxy_view_with_render , name='proxy_view_render'),
     path('admin/', admin.site.urls),
     path('',include('front.urls')),
     path('back/',include('back.urls'))
