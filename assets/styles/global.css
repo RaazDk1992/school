@@ -3,6 +3,7 @@
     --primary-color-1: #4364F7;
     --primary-color-2: #6FB1FC;
     --color-inactive:#8f8f8f;
+    --color-active:#FFFFFF;
 }
 
 .form-control:focus {

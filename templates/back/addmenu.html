@@ -1,29 +1,102 @@
-{% extends 'meta.html'%}
-
 {% block content %}
-    <div class="d-flex justify-content-center">
-        <form method="POST" class="d-flex flex-row align-items-center gap-3 p-3 border rounded mt-5">
-            {% csrf_token %}
-
-            <!-- Menu Item Field -->
-            <div class="d-flex align-items-center">
-                <label for="{{ form.menuItem.id_for_label }}" class="me-2 fw-bold">MenuItem:</label>
-                {{ form.menuItem }}
+<div class="modal fade" id="addMenuModal" tabindex="-1" aria-labelledby="addMenuModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addMenuModalLabel">Add Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
 
-            <!-- Expandable Checkbox -->
-            <div class="d-flex align-items-center">
-                <label for="{{ form.is_expandable.id_for_label }}" class="me-2">Is expandable:</label>
-                {{ form.is_expandable }}
+                    <!-- Menu Item Field -->
+                    <div class="mb-3">
+                        <label for="menuItem" class="form-label fw-bold">Menu Item:</label>
+                        <input type="text" name="menuItem" id="menuItem" class="form-control">
+                    </div>
+
+                    <!-- Active Checkbox -->
+                    <div class="form-check">
+                        <input type="checkbox" name="is_active" id="is_active" class="form-check-input" checked>
+                        <label class="form-check-label" for="is_active">Is Active</label>
+                    </div>
+
+                    <!-- Expandable Checkbox + Add Submenu Button -->
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <!-- Left: Checkbox -->
+                        <div class="form-check">
+                            <input type="checkbox" name="is_expandable" id="is_expandable" class="form-check-input">
+                            <label class="form-check-label" for="is_expandable">Is Expandable</label>
+                        </div>
+                    
+                        <button type="button" id="addSubmenuBtn" class="btn btn-sm btn-success ms-3" style="display: none;">
+                            <i class="fa fa-plus-square"></i>
+                        </button>
+                    </div>
+
+                    <!-- Submenu Fields -->
+                    <div id="submenu_field"></div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
             </div>
-
-            <!-- Active Checkbox -->
-            <div class="d-flex align-items-center">
-                <label for="{{ form.is_active.id_for_label }}" class="me-2">Is active:</label>
-                {{ form.is_active }}
-            </div>
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </div>
     </div>
+</div>
+
+<script>
+ 
+    document.addEventListener("DOMContentLoaded", function () {
+        const isExpanded = document.getElementById("is_expandable");
+        const addSubmenuBtn = document.getElementById("addSubmenuBtn");
+        const subMenuField = document.getElementById("submenu_field");
+
+        
+        isExpanded.addEventListener("change", function () {
+            if (this.checked) {
+                addSubmenuBtn.style.display = "inline-block"; // Show button
+            } else {
+                addSubmenuBtn.style.display = "none"; 
+                subMenuField.innerHTML = ""; 
+            }
+        });
+
+        addSubmenuBtn.addEventListener("click", function () {
+            addSubmenuInput();
+        });
+
+        function addSubmenuInput() {
+            const inputGroup = document.createElement("div");
+            const uniqueId = "submenu_" + Date.now();
+            inputGroup.className = "input-group mt-3";
+            inputGroup.id = uniqueId;
+
+            // Create input field
+            const newInput = document.createElement("input");
+            newInput.type = "text";
+            newInput.name = "submenuItem[]"; // Allow multiple submenu items
+            newInput.className = "form-control";
+            newInput.placeholder = "Enter submenu item";
+
+            // Create delete button
+            const deleteButton = document.createElement("button");
+            deleteButton.className = "btn btn-outline-danger";
+            deleteButton.type = "button";
+            deleteButton.innerHTML = '<i class="fa fa-trash-o"></i>'; 
+
+            deleteButton.addEventListener("click", function () {
+                subMenuField.removeChild(inputGroup);
+            });
+
+            inputGroup.appendChild(newInput);
+            inputGroup.appendChild(deleteButton);
+            subMenuField.appendChild(inputGroup);
+        }
+    });
+       
+</script>
 {% endblock %}

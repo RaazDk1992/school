@@ -5,19 +5,84 @@
 {% endblock %}
 
 {% block content %}
-    <div class="d-flex">
 
+{% include 'back/addmenu.html'%}
+<div class="container mt-3">
+    <div class="row">
+        <!-- Article Card -->
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card d-flex align-items-center justify-content-center">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Add an Article &nbsp; <i class="fa fa-file-text-o"></i></h5>
+                
+                    <a href ="#"  class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                
+                </div>
+            </div>
+        </div>
+
+        <!-- Notice Card -->
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card d-flex align-items-center justify-content-center">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Add a Notice &nbsp; <i class="fa fa-file-o"></i></h5>
+                    <p class="d-flex align-items-center justify-content-center">
+                        <i class="fa fa-plus fa-2x"></i>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gallery Card -->
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card d-flex align-items-center justify-content-center">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Add an Album &nbsp; <i class="fa fa-picture-o"></i></h5>
+                    <p class="d-flex align-items-center justify-content-center">
+                        <i class="fa fa-plus fa-2x"></i>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Second rwo-->
+
+    <div class="row">
+        <!-- Article Card -->
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card d-flex align-items-center justify-content-center">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Add Menu Item &nbsp; <i class="fa fa-file-text-o"></i></h5>
+                
+                    <a href ="#"  class="btn btn-primary mt-5" data-bs-toggle="modal" data-bs-target="#addMenuModal">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                
+                </div>
+            </div>
+        </div>
+
+       
+    </div>
+     
+</div>
+
+    <!-- Floating Button -->
+    <div class="d-flex">
         <div class="dropup">
             <button class="btn btn-primary floating-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-plus"></i>
+                <i class="fa fa-cog"></i>
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Add An Article</a></li>
-                <li><a class="dropdown-item" href="#">Add A Notice</a></li>
-                <li><a class="dropdown-item" href="#">Add A Gallery</a></li>
+                <li><a class="dropdown-item" href="#">Account Settings</a></li>
+                <li><a class="dropdown-item" href="#">Manage Users</a></li>
+                <li><a class="dropdown-item" href="#">Additional</a></li>
             </ul>
         </div>
-    
-        
     </div>
+</div>
+
 {% endblock %}

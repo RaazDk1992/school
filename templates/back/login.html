@@ -38,6 +38,9 @@
     function getCsrfToken() {
         return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     }
+    function getCssVariable(variableName) {
+        return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+    }
 
     function submitLogin() {
         const form = document.getElementById("login-form");
@@ -54,8 +57,10 @@
             iziToast.success({
                 title: 'Success',
                 message: 'Login successful!',
-                position: 'topRight',
-                backgroundColor: '#4CAF50',
+                position: 'bottomCenter',
+                backgroundColor: getCssVariable('--primary-color-0'),
+                titleColor:getCssVariable('--color-active'),
+                messageColor:getCssVariable('--color-active'),
                 timeout: 3000
             });
 
