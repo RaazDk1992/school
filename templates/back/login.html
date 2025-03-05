@@ -8,7 +8,7 @@
             <img class="card-img-top" src="{% static 'img/schoolx.png' %}" style="width:15rem;height:10rem;object-fit:contain;">
         </div>
         <div class="card-body">
-            <form id="login-form">
+            <form id="login-form" Content-Type="application/x-www-form-urlencoded">
                 {% csrf_token %}
                 <div class="form-row mb-3">
                     <div>
@@ -44,7 +44,7 @@
 
     function submitLogin() {
         const form = document.getElementById("login-form");
-        save(form,'login');
+        submit(form,'');
     }
 </script>
 

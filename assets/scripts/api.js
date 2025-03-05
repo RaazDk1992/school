@@ -1,11 +1,12 @@
-const root="/back/";
-function save(form,path){
+
+function submit(form,path,contentType){
 
         const formData = new FormData(form);
+        const encType = form.enctype;
 
-        axios.post("/back/login/", formData, {
+        axios.post(path, formData, {
             headers: { 
-               "Content-Type": "application/x-www-form-urlencoded",
+               "Content-Type": encType,
                 "X-CSRFToken": getCsrfToken() 
             },
             withCredentials:true
@@ -18,6 +19,7 @@ function save(form,path){
                 position: 'bottomCenter',
                 backgroundColor: getCssVariable('--primary-color-0'),
                 titleColor:getCssVariable('--color-active'),
+                iconColor:getCssVariable('---color-active'),
                 messageColor:getCssVariable('--color-active'),
                 timeout: 3000
             });
@@ -33,6 +35,7 @@ function save(form,path){
                 position: 'bottomCenter',
                 backgroundColor: '#900C3F',
                 titleColor:'#FFFFFF',
+                iconColor:'#FFFFFF',
                 messageColor:'#FFFFFF',
                 timeout: 4000
             });

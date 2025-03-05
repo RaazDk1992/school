@@ -1,11 +1,12 @@
-const root="/back/";
-function save(form,path){
+
+function submit(form,path,contentType){
 
         const formData = new FormData(form);
+        const encType = form.enctype;
 
-        axios.post("/back/login/", formData, {
+        axios.post(path, formData, {
             headers: { 
-               "Content-Type": "application/x-www-form-urlencoded",
+               "Content-Type": encType,
                 "X-CSRFToken": getCsrfToken() 
             },
             withCredentials:true
