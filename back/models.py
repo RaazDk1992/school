@@ -46,14 +46,14 @@ class Article(models.Model):
 
 
 class Menu(models.Model):
-    menuItem = models.CharField(max_length=200)
+    menuItem = models.CharField(max_length=200, blank=False, null=False)
     is_expandable = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
     def __str__(self):
         return self.menuItem
 class SubMenu(models.Model):
-    menuRef = models.ForeignKey(Menu,on_delete=models.CASCADE)
+    menuRef = models.ForeignKey(Menu,on_delete=models.CASCADE, blank=False,null=False)
     submenu = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     def __str__(self):
