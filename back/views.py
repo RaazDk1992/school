@@ -14,6 +14,8 @@ def sayBye(request):
 })
 
 
+def showTimeLine(request):
+    return render(request, 'back/timeline.html')
 
 
 def userLogin(request):
@@ -60,9 +62,13 @@ def addArticle(request):
         if request.method =="POST":
             form = ArticleForm(request.POST,request.FILES)
             if form.is_valid():
-                form.save()
+                article = form.save()
+                
+                return JsonResponse({"message":f"Article {article.title} published!!"},status=200)
             else:
-                print(form.errors)
+               
+                return JsonResponse({"message": "Error", "errors": form.errors}, status=400)
+
         if request.method =="GET":
             aticleForm =  ArticleForm()
             return render(request,'back/addarticle.html',{'form':aticleForm})

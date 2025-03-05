@@ -1,4 +1,7 @@
 
+function getCssVariable(variableName) {
+    return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
+}
 function submit(form,path,contentType){
 
         const formData = new FormData(form);
@@ -12,6 +15,7 @@ function submit(form,path,contentType){
             withCredentials:true
         })
         .then(response => {
+            console.log(response);
             const message = response.data?.message || "Task successful!";
             iziToast.success({
                 title: 'Success',
@@ -29,6 +33,7 @@ function submit(form,path,contentType){
             }, 2000);
         })
         .catch(error => {
+            console.log(error);
             iziToast.error({
                 title: 'Error',
                 message: error.response?.data?.message || 'failed. Please try again!',
