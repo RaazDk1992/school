@@ -38,9 +38,7 @@
     function getCsrfToken() {
         return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     }
-    function getCssVariable(variableName) {
-        return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
-    }
+   
 
     function submitLogin() {
         const form = document.getElementById("login-form");

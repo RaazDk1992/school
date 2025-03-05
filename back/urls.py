@@ -6,5 +6,6 @@ urlpatterns =[
     path('dashboard/',views.loadDashboard,name="dashboard"),
     path('newarticle/',views.addArticle,name="newArticle"),
     path('addmenu/',views.addMenu,name="addmenu"),
+    path("timeline/",views.showTimeLine, name="timeline"),
     path('bye/',views.sayBye,name="bye"),
 ]

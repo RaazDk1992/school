@@ -28,3 +28,30 @@
     transform: scale(1.1);
 }
 
+/* Custom Font Definitions */
+@font-face {
+    font-family: 'ochere';
+    src: url('/static/fonts/Ochre.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+ }
+ 
+ @font-face {
+    font-family: 'rolest';
+    src: url('/static/fonts/Rolest.ttf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+ }
+ 
+ @font-face {
+    font-family: 'milky';
+    src: url('/static/fonts/milky.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+ }
+ .page_headings{
+    font-family: 'ochere';
+    font-size: x-large;
+    font-weight: bold;
+ }
+
