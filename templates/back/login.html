@@ -44,41 +44,7 @@
 
     function submitLogin() {
         const form = document.getElementById("login-form");
-        const formData = new FormData(form);
-
-        axios.post("/back/login/", formData, {
-            headers: { 
-               "Content-Type": "application/x-www-form-urlencoded",
-                "X-CSRFToken": getCsrfToken() 
-            },
-            withCredentials:true
-        })
-        .then(response => {
-            iziToast.success({
-                title: 'Success',
-                message: 'Login successful!',
-                position: 'bottomCenter',
-                backgroundColor: getCssVariable('--primary-color-0'),
-                titleColor:getCssVariable('--color-active'),
-                messageColor:getCssVariable('--color-active'),
-                timeout: 3000
-            });
-
-            setTimeout(() => {
-                window.location.href = "/back/dashboard"; // Redirect after success
-            }, 2000);
-        })
-        .catch(error => {
-            iziToast.error({
-                title: 'Error',
-                message: error.response?.data?.message || 'Login failed. Please try again!',
-                position: 'bottomCenter',
-                backgroundColor: '#900C3F',
-                titleColor:'#FFFFFF',
-                messageColor:'#FFFFFF',
-                timeout: 4000
-            });
-        });
+        save(form,'login');
     }
 </script>
 
