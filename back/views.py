@@ -3,6 +3,8 @@ from django.http import HttpResponse,JsonResponse
 from django.contrib.auth  import authenticate,login,logout
 from back.forms.menu import MenuForm,SubMenuFormSet
 from back.forms.newArticle import ArticleForm
+from back.forms.newgallery import GalleryForm,GalleryImageFormset
+from back.models import Image,Gallery
 
 # Create your views here.
 
@@ -47,16 +49,48 @@ def addMenu(request):
         if menu_form.is_valid() and submenu_formset.is_valid():
             menu = menu_form.save()
             submenu_instances = submenu_formset.save(commit=False) 
-            print(submenu_instances)
             for submenu in submenu_instances:
                 submenu.menuRef = menu
-                submenu.save()  
-
-            #submenu_formset.save_m2m()  # Ensure many-to-many fields are saved if any
-
-            #return redirect('success_url')  # Redirect after saving
+                submenu.save()            
 
     return render(request, 'back/addmenu.html', {'form': menu_form, 'submenu_formset': submenu_formset})
+
+def addGallery(request):
+    # Initialize forms
+    gallery_form = GalleryForm(request.POST or None)
+    gallery_image_formset = GalleryImageFormset(request.POST or None, request.FILES or None)
+
+    if request.method == "POST":
+        if gallery_form.is_valid() and gallery_image_formset.is_valid():
+            # Save the gallery first
+            gallery_instance = gallery_form.save()
+
+            images_instances = gallery_image_formset.save(commit=False)
+            if not images_instances:
+                images_instances = [Image()]
+
+            for idx, image in enumerate(images_instances):
+                print("X")
+                image_files = request.FILES.getlist(f'image_{idx+1}')  # 'image_{idx+1}' corresponds to input names
+                for image_file in image_files:
+                    # Create a new image object for each uploaded file
+                    gallery_image = Image.objects.create(
+                        image=image_file,
+                        gallery=gallery_instance
+                    )
+                    gallery_image.save()  # Save the gallery image instance
+
+            return redirect('gallery_list')  # Redirect after successful save
+
+    else:
+       
+        gallery_form = GalleryForm()
+        gallery_image_formset = GalleryImageFormset(queryset=Image.objects.none())
+
+    return render(request, 'back/addgalary.html', {
+        'gallery_form': gallery_form,
+        'gallery_image_formset': gallery_image_formset
+    })
 def addArticle(request):
     if request.user.is_authenticated:
         if request.method =="POST":
