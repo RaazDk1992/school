@@ -1,4 +1,3 @@
-/* Container for the file grid */
 #fileGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -6,7 +5,6 @@
     margin-top: 20px;
 }
 
-/* Style for each preview container */
 .preview-container {
     position: relative;
     overflow: hidden;
@@ -15,12 +13,7 @@
     transition: box-shadow 0.3s ease-in-out;
 }
 
-/* Hover effect for the preview container */
-.preview-container:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
 
-/* Style for the image preview */
 .preview-img {
     width: 100%;
     height: 100%;
@@ -28,12 +21,10 @@
     transition: transform 0.3s ease;
 }
 
-/* Scale image on hover */
 .preview-container:hover .preview-img {
     transform: scale(1.1);
 }
 
-/* Filename label (hidden by default) */
 .filename {
     position: absolute;
     bottom: 0;
@@ -54,24 +45,19 @@
     opacity: 1;
 }
 
-/* Delete button style */
 .delete-btn {
     position: absolute;
     top: 5px;
     right: 5px;
-    background-color: rgba(255, 0, 0, 0.8);
+    background-color: rgba(112, 110, 110, 0.8);
     color: white;
     border: none;
-    border-radius: 50%;
+    border-radius: 10%;
     padding: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-/* Change button color on hover */
-.delete-btn:hover {
-    background-color: rgba(255, 0, 0, 1);
-}
 
 .delete-btn:focus {
     outline: none;
