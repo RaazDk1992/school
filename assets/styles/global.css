@@ -50,8 +50,8 @@
     font-style: normal;
  }
  .page_headings{
-    font-family: 'ochere';
-    font-size: x-large;
-    font-weight: bold;
+    font-family: 'rolest' !important;
+    color: var(--primary-color-0);
+    font-size: 8rem;
  }
 

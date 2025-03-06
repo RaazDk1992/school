@@ -1,9 +1,12 @@
 {% extends 'meta.html' %}
+{% load static %}
+
+{% block extra_css %} <link rel="stylesheet" type="text/css" href="{% static 'styles/newgallery.css' %}">{% endblock %}
 
 {% block content %}
+
 <div class="container mt-4">
     <h2>Add Gallery</h2>
-
     <form method="POST" class="col-sm-8" enctype="multipart/form-data">
         {% csrf_token %}
     
@@ -14,7 +17,6 @@
             </div>
         </div>
     
-       
         <div id="image_field" class="mt-3">
             {{ gallery_image_formset.management_form }} 
             
@@ -22,10 +24,12 @@
                 <div class="form-row">
                     {{form.image}}
                     <label for="image">Select Files</label>
-                    <input type="file" name="image_{{ forloop.counter }}" multiple="multiple" />
+                    <input type="file" id="files_{{ forloop.counter }}" name="image_{{ forloop.counter }}" multiple="multiple" class="file-input"/>
                 </div>
             {% endfor %}
         </div>
+
+        <div id="fileGrid" class="grid grid-cols-2 md:grid-cols-3 gap-4"></div>
     
         <!-- Submit Button -->
         <button type="submit" class="btn btn-primary mt-3">Submit</button>
@@ -33,5 +37,57 @@
     
 </div>
 
+<script>
+    // Function to handle file preview and deletion
+    document.querySelectorAll('.file-input').forEach(input => {
+        input.addEventListener('change', function(event) {
+            const fileInput = event.target;
+            const files = fileInput.files;
+            const fileGrid = document.getElementById('fileGrid');
+            
+            // Clear any existing previews
+            fileGrid.innerHTML = '';
+
+            // Loop through selected files and generate preview
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('preview-container');
+                    previewContainer.style.position = 'relative';
+
+                    const imagePreview = document.createElement('img');
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.add('img-fluid', 'preview-img');
+                    previewContainer.appendChild(imagePreview);
+
+                    // Delete button for each file
+                    const deleteButton = document.createElement('button');
+                    deleteButton.classList.add('btn', 'btn-danger', 'delete-btn');
+                    deleteButton.innerText = 'X';
+                    deleteButton.onclick = function() {
+                        // Remove the preview container
+                        previewContainer.remove();
+                        
+                        // Create a new file list excluding the deleted file
+                        const newFileList = Array.from(fileInput.files).filter(f => f !== file);
+                        
+                        // Reassign the remaining files to the input field
+                        const dataTransfer = new DataTransfer();
+                        newFileList.forEach(f => dataTransfer.items.add(f));
+                        fileInput.files = dataTransfer.files; // Update the file input with the new list
+                    };
+                    previewContainer.appendChild(deleteButton);
+
+                    // Append the preview to the file grid
+                    fileGrid.appendChild(previewContainer);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        });
+    });
+</script>
 
 {% endblock %}

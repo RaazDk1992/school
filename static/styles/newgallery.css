@@ -1,0 +1,64 @@
+#fileGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.preview-container {
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.preview-container:hover .preview-img {
+    transform: scale(1.1);
+}
+
+.filename {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Show filename on hover */
+.preview-container:hover .filename {
+    opacity: 1;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(112, 110, 110, 0.8);
+    color: white;
+    border: none;
+    border-radius: 10%;
+    padding: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.delete-btn:focus {
+    outline: none;
+}
