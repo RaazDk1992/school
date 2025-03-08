@@ -56,6 +56,7 @@ class Article(models.Model):
 
 class Menu(models.Model):
     menuItem = models.CharField(max_length=200, blank=False, null=False)
+    menuPath = models.CharField(max_length=100)
     is_expandable = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
@@ -67,6 +68,19 @@ class SubMenu(models.Model):
     is_active = models.BooleanField(default=True)
     def __str__(self):
         return self.submenu
+    
+class Message(models.Model):
+
+    message = models.TextField()
+    image = models.ImageField(upload_to='message_board/')
+    is_active = models.BooleanField(default=True)
+
+class Sliders(models.Model):
+    image = models.ImageField(upload_to="sliders/")
+    title = models.CharField(max_length=200, null=True,blank=True)
+
+
+
 
 
 
