@@ -6,8 +6,6 @@ from django.utils import timezone
 from django_ckeditor_5.fields import CKEditor5Field
 from sorl.thumbnail import get_thumbnail
 
-
-
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     firstName = models.CharField(max_length=100)
