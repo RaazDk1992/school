@@ -1,69 +1,82 @@
 {% extends 'meta.html' %}
 {% load static %}
+
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'styles/timeline.css'%}">
+    <link rel="stylesheet" href="{% static 'styles/timeline.css' %}">
 {% endblock %}
 
-{% block content%}
+{% block content %}
+    <section class="timeline_area section_padding_130">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-sm-10 col-md-10">
+                    <!-- Section Heading -->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <!-- Timeline Area -->
+                    <div class="apland-timeline-area">
+                        <!-- Single Timeline Content -->
+                         {% for gallery in galleries%}
 
-<section class="timeline_area section_padding_130">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-8 col-lg-6">
-               
-                <div class="section_heading text-center">
-                    <h6 class="page_headings">Gallery*</h6>
-                    
-                    <div class="line"></div>
+                         <div class="single-timeline-area">
+                            <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s">
+                                <p>{{gallery.creation_date}}</p>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-10 col-lg-10 col-sm-10">
+                                    <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s">
+                                        <div class="timeline-icon">
+                                            <i class="fa fa-address-card" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="timeline-text">
+                                            <h6>{{gallery.galleryName}}</h6>
+                                            <div class="timeline-gallery">
+                                                <div class="row">
+                                                    {% for img in gallery.image_set.all %}
+                                                    
+                                                    <div class="col-4">
+                                                        <img src="https://fastly.picsum.photos/id/254/200/200.jpg?hmac=wM9u9N0tgdWKFIr8MxBLr8rLoV0JjUUKLk32XFV8agQ"
+                                                            class="img-fluid rounded zoomable" alt="Gallery Image 1"
+                                                            onclick="openModal(this)">
+                                                    </div>
+
+                                                   {%endfor%}
+                                                   
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         {% endfor %}
+                        <!-- end of timeline -->
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <!-- Timeline Area-->
-                <div class="apland-timeline-area">
-                    <!-- Single Timeline Content-->
-                    <div class="single-timeline-area">
-                        <div class="timeline-date wow fadeInLeft" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
-                            <p>Near Future</p>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-address-card" aria-hidden="true"></i></div>
-                                    <div class="timeline-text">
-                                        <h6>Updated 5.0</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.5s" style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-archive" aria-hidden="true"></i></div>
-                                    <div class="timeline-text">
-                                        <h6>Fixed bug</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6 col-lg-4">
-                                <div class="single-timeline-content d-flex wow fadeInLeft" data-wow-delay="0.7s" style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
-                                    <div class="timeline-icon"><i class="fa fa-address-book" aria-hidden="true"></i></div>
-                                    <div class="timeline-text">
-                                        <h6>Reach 1k Users</h6>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-    
-                    
-                    </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" class="img-fluid" alt="Zoomed Image">
                 </div>
             </div>
         </div>
     </div>
-</section>
 
+    <!-- Script -->
+    <script>
+        function openModal(image) {
+            document.getElementById("modalImage").src = image.src;
+            var modal = new bootstrap.Modal(document.getElementById("imageModal"));
+            modal.show();
+        }
+    </script>
 {% endblock %}

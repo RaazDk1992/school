@@ -5,7 +5,8 @@ from back.forms.menu import MenuForm,SubMenuFormSet
 from back.forms.newArticle import ArticleForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.models import Image,Gallery
-
+from django.db.models import Prefetch
+from collections import defaultdict
 # Create your views here.
 
 
@@ -17,7 +18,12 @@ def sayBye(request):
 
 
 def showTimeLine(request):
-    return render(request, 'back/timeline.html')
+   
+    galleries = Gallery.objects.prefetch_related(
+        Prefetch('image_set', queryset=Image.objects.all())
+    ).order_by('-creation_date')
+    
+    return render(request, 'back/timeline.html',{'galleries':galleries})
 
 
 def userLogin(request):
