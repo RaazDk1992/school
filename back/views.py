@@ -3,6 +3,7 @@ from django.http import HttpResponse,JsonResponse
 from django.contrib.auth  import authenticate,login,logout
 from back.forms.menu import MenuForm,SubMenuFormSet
 from back.forms.newArticle import ArticleForm
+from back.forms.newNotice import NoticeForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.models import Image,Gallery
 from django.db.models import Prefetch
@@ -114,6 +115,27 @@ def addArticle(request):
             return render(request,'back/addarticle.html',{'form':aticleForm})
     else:
         return render(request,"back/addarticle.html")
+    
+def addNotice(request):
+    if request.user.is_authenticated:
+        if request.method =="POST":
+            form = NoticeForm(request.POST,request.FILES)
+            if form.is_valid():
+                notice = form.save()
+                
+                return JsonResponse({"message":f"Notice {notice.noticeTitle} published!!"},status=200)
+            else:
+               
+                return JsonResponse({"message": "Error", "errors": form.errors}, status=400)
+
+        if request.method =="GET":
+            noticeForm =  NoticeForm()
+            return render(request,'back/addnotice.html',{'form':noticeForm})
+    else:
+        return render(request,"back/addarticle.html")
+    
+
+
 
 def createUser(request):
     return render(request,"back/register.html")
