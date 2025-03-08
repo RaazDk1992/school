@@ -4,6 +4,7 @@ from django.contrib.auth  import authenticate,login,logout
 from back.forms.menu import MenuForm,SubMenuFormSet
 from back.forms.newArticle import ArticleForm
 from back.forms.newNotice import NoticeForm
+from back.forms.messages import MessageForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.models import Image,Gallery
 from django.db.models import Prefetch
@@ -134,6 +135,18 @@ def addNotice(request):
     else:
         return render(request,"back/addarticle.html")
     
+
+def addMessage(request):
+    if request.user.is_authenticated:
+        if request.method =="POST":
+            form = MessageForm(request.POST,request.FILES)
+            if form.is_valid():
+                messagef = form.save()
+        else:
+            form = MessageForm()
+            return render(request,"back/addMessage.html", {"form":form})
+    else:
+        return redirect('login')
 
 
 
