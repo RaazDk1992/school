@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django_ckeditor_5.fields import CKEditor5Field
+from sorl.thumbnail import get_thumbnail
 
 
 
@@ -26,6 +27,7 @@ class Notices(models.Model):
     noticeTitle = models.CharField(max_length=200)
     noticeBody = CKEditor5Field(config_name='extends')
     document = models.CharField(max_length=200)
+    is_active = models.BooleanField(default=True)
     def __str__(self):
         return self.noticeTitle
 
@@ -41,6 +43,8 @@ class Gallery(models.Model):
 class Image(models.Model):
     gallery = models.ForeignKey(Gallery,on_delete=models.CASCADE)
     image = models.ImageField(upload_to='gallery_images/')  
+    def thumbnail_url(self):
+        return get_thumbnail(self.image, '300x200', crop='center', quality=90).url
 
 class Article(models.Model):
     title = models.CharField(max_length=200)

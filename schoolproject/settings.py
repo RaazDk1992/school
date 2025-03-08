@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'back.apps.BackConfig',
     'request',
     'django_ckeditor_5',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
