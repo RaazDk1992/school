@@ -1,0 +1,100 @@
+{% extends 'meta.html' %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center col-lg-10">
+    <form method="POST" enctype="multipart/form-data" action="" id="slider-form" class="w-100 p-4">
+        {% csrf_token %}
+        {{ formset.management_form }}
+
+        <div id="form-container" class="w-100">
+            {% for form in formset %}
+            <div class="form-group d-flex align-items-center gap-3 w-100 original-form">
+                
+                <!-- Title Field (Largest) -->
+                <div class="flex-grow-1">
+                    <label class="form-label">Title</label>
+                    {{ form.title }}
+                </div>
+
+                <!-- File Picker (Medium) -->
+                <div class="col-md-3">
+                    <label class="form-label">Image</label>
+                    {{ form.image }}
+                </div>
+
+                <!-- Checkbox (Small) -->
+                <div class="col-auto d-flex flex-column align-items-center">
+                    <label class="form-label">Active</label>
+                    {{ form.is_active }}
+                </div>
+
+                <!-- Add Button (Small) -->
+                <div class="col-auto d-flex align-items-end">
+                    <button type="button" class="btn btn-success btn-sm add-form">+</button>
+                </div>
+                
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- New forms will be added here -->
+        <div id="extra_forms" class="w-100"></div>
+
+        <input type="submit" name="submit" value="Submit" class="btn btn-primary btn-sm mt-3 w-auto" />
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const extraFormsContainer = document.getElementById("extra_forms");
+        const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+        let formNum = parseInt(totalForms.value); // Get the current form count
+
+        document.addEventListener("click", function (event) {
+            if (event.target.classList.contains("add-form")) {
+                event.preventDefault();
+                addNewForm();
+            } else if (event.target.classList.contains("delete-form")) {
+                event.preventDefault();
+                deleteForm(event.target);
+            }
+        });
+
+        function addNewForm() {
+            let newForm = document.querySelector(".original-form").cloneNode(true);
+            formNum++;
+
+           
+            newForm.querySelectorAll("input, select, textarea").forEach(input => {
+                if (input.name) {
+                    input.name = input.name.replace(/-\d+-/, `-${formNum}-`);
+                    input.id = input.id.replace(/-\d+-/, `-${formNum}-`);
+                    input.value = ""; // Clear values
+                }
+            });
+
+            // Remove 'add-form' button from new form
+            newForm.querySelector(".add-form").remove();
+
+            // Add a delete button
+            let deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.classList.add("btn", "btn-danger", "btn-sm", "delete-form");
+            deleteButton.innerText = "X";
+            newForm.appendChild(deleteButton);
+
+            // Append new form to extra_forms container
+            extraFormsContainer.appendChild(newForm);
+
+            // Update management form count
+            totalForms.value = formNum + 1;
+        }
+
+        function deleteForm(button) {
+            button.parentElement.remove();
+            formNum--;
+            totalForms.value = formNum;
+        }
+    });
+</script>
+{% endblock %}

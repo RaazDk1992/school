@@ -74,8 +74,10 @@ class Message(models.Model):
     is_active = models.BooleanField(default=True)
 
 class Sliders(models.Model):
-    image = models.ImageField(upload_to="sliders/")
     title = models.CharField(max_length=200, null=True,blank=True)
+    image = models.ImageField(upload_to="sliders/")
+    is_active = models.BooleanField(default=True)
+    
 
 
 

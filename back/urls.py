@@ -8,6 +8,7 @@ urlpatterns =[
     path('newnotice/',views.addNotice,name="addnotice"),
     path('newgallery',views.addGallery,name="newgallery"),
     path('addmessage/',views.addMessage,name="newmessage"),
+    path('addslider/',views.addSlider,name="addslider"),
     path('addmenu/',views.addMenu,name="addmenu"),
     path("timeline/",views.showTimeLine, name="timeline"),
     path('bye/',views.sayBye,name="bye"),

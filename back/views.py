@@ -6,6 +6,7 @@ from back.forms.newArticle import ArticleForm
 from back.forms.newNotice import NoticeForm
 from back.forms.messages import MessageForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
+from back.forms.newslider import SliderForm,SliderFormSet
 from back.models import Image,Gallery
 from django.db.models import Prefetch
 from collections import defaultdict
@@ -99,6 +100,19 @@ def addGallery(request):
         'gallery_form': gallery_form,
         'gallery_image_formset': gallery_image_formset
     })
+def addSlider(request):
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            formset  = SliderFormSet(request.POST,request.FILES)
+            if formset.is_valid():
+                for form in formset:
+                    if form.cleaned_data:
+                        form.save()
+        else:
+            blank_formset = SliderFormSet()
+            return render(request,'back/addslider.html',{'formset':blank_formset})
+    else:
+        return redirect('login')
 def addArticle(request):
     if request.user.is_authenticated:
         if request.method =="POST":
