@@ -1,7 +1,7 @@
 {% extends 'meta.html'%}
 
 {% block content %}
-    <div class="container d-flex align-items-center justify-content-center col-sm-8 ">
+    <div class="container d-flex align-items-center justify-content-center col-sm-8 mt-5 ">
         {{ form.media }}
         <form method="POST" enctype="multipart/form-data" action="" id="article-form">
             {% csrf_token %}
@@ -14,10 +14,7 @@
 
     <script>
 
-        document.getElementById("article-form").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent default form submission
-            saveArticle();
-        });
+       
     
         function getCsrfToken() {
             return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
