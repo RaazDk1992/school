@@ -21,6 +21,9 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_profile(sender,instance, **kwargs):
         instance.profile.save()
 
+class ContentType(models.Model):
+    contentType = models.CharField(max_length=200)
+    is_active = models.BooleanField(default=True)
 
 class Notices(models.Model):
     noticeTitle = models.CharField(max_length=200)
@@ -56,6 +59,7 @@ class Article(models.Model):
 class Menu(models.Model):
     menuItem = models.CharField(max_length=200, blank=False, null=False)
     menuPath = models.CharField(max_length=100)
+    
     is_expandable = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
@@ -80,6 +84,7 @@ class Sliders(models.Model):
     is_active = models.BooleanField(default=True)
 
 class Dynamic(models.Model):
+    contentType = models.ForeignKey(ContentType,on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     body =  CKEditor5Field(config_name='extends')
     image = models.ImageField(upload_to="dynamic/images/")
