@@ -108,6 +108,9 @@ def createContent(request):
     if request.user.is_authenticated:
 
         if request.method =="POST":
+            form = DynamicForm(request.POST,request.FILES)
+            if form.is_valid():
+                form.save()
             return null
         else :
             dyn = DynamicForm()
@@ -129,9 +132,12 @@ def addContentType(request):
         
 
     
-def renderDynamic(request,slug):
-    content = get_object_or_404(Dynamic,slug)
-    return null
+def dynamicView(request):
+
+    path = request.path.rstrip('/').split('/')[-1] 
+    print(path)
+    return render(request,'back/login.html')
+
 def addSlider(request):
     if request.user.is_authenticated:
         if request.method == "POST":

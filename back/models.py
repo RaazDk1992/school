@@ -24,6 +24,9 @@ def save_profile(sender,instance, **kwargs):
 class ContentType(models.Model):
     contentType = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
+    def __str__(self):
+        return self.contentType
+    
 
 class Notices(models.Model):
     noticeTitle = models.CharField(max_length=200)
@@ -59,7 +62,7 @@ class Article(models.Model):
 class Menu(models.Model):
     menuItem = models.CharField(max_length=200, blank=False, null=False)
     menuPath = models.CharField(max_length=100)
-    
+    contentType = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     is_expandable = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
@@ -91,8 +94,8 @@ class Dynamic(models.Model):
     files = models.FileField(upload_to='dynamic/files/')
     path = models.SlugField(unique=True, blank=True)
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.title)
+        if not self.path:
+            self.path = slugify(self.title)
         super().save(*args,**kwargs)
 
     
