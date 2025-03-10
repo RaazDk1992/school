@@ -6,6 +6,7 @@ from back.forms.newArticle import ArticleForm
 from back.forms.newNotice import NoticeForm
 from back.forms.messages import MessageForm
 from back.forms.Dyamic import DynamicForm
+from back.forms.contentTypes import ContentTypeForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.forms.newslider import SliderForm,SliderFormSet
 from back.models import Image,Gallery, Dynamic
@@ -113,6 +114,20 @@ def createContent(request):
             return render(request,'back/dynamic.html',{'form':dyn})
     else:
         return redirect('login')
+    
+def addContentType(request):
+    if request.user.is_authenticated:
+        if request.method =="POST":
+            frm = ContentTypeForm(request.POST or None)
+            if frm.is_valid():
+                frm.save()
+        else:
+            form = ContentTypeForm()
+            return render(request,'back/contentType.html',{'form':form})
+    else:
+        return redirect('login') 
+        
+
     
 def renderDynamic(request,slug):
     content = get_object_or_404(Dynamic,slug)
