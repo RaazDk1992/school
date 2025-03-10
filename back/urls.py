@@ -11,5 +11,8 @@ urlpatterns =[
     path('addslider/',views.addSlider,name="addslider"),
     path('addmenu/',views.addMenu,name="addmenu"),
     path("timeline/",views.showTimeLine, name="timeline"),
+    path('content/create/',views.createContent,name="createcontent"),
+    path('content/<slug:slug>/',views.renderDynamic,name="renderdynamic"),
+
     path('bye/',views.sayBye,name="bye"),
 ]

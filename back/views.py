@@ -1,15 +1,17 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth  import authenticate,login,logout
 from back.forms.menu import MenuForm,SubMenuFormSet
 from back.forms.newArticle import ArticleForm
 from back.forms.newNotice import NoticeForm
 from back.forms.messages import MessageForm
+from back.forms.Dyamic import DynamicForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.forms.newslider import SliderForm,SliderFormSet
-from back.models import Image,Gallery
+from back.models import Image,Gallery, Dynamic
 from django.db.models import Prefetch
 from collections import defaultdict
+
 # Create your views here.
 
 
@@ -100,6 +102,21 @@ def addGallery(request):
         'gallery_form': gallery_form,
         'gallery_image_formset': gallery_image_formset
     })
+
+def createContent(request):
+    if request.user.is_authenticated:
+
+        if request.method =="POST":
+            return null
+        else :
+            dyn = DynamicForm()
+            return render(request,'back/dynamic.html',{'form':dyn})
+    else:
+        return redirect('login')
+    
+def renderDynamic(request,slug):
+    content = get_object_or_404(Dynamic,slug)
+    return null
 def addSlider(request):
     if request.user.is_authenticated:
         if request.method == "POST":
