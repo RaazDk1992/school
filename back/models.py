@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 from sorl.thumbnail import get_thumbnail
 
@@ -77,8 +78,21 @@ class Sliders(models.Model):
     title = models.CharField(max_length=200, null=True,blank=True)
     image = models.ImageField(upload_to="sliders/")
     is_active = models.BooleanField(default=True)
-    
 
+class Dynamic(models.Model):
+    title = models.CharField(max_length=100)
+    body =  CKEditor5Field(config_name='extends')
+    image = models.ImageField(upload_to="dynamic/images/")
+    files = models.FileField(upload_to='dynamic/files/')
+    path = models.SlugField(unique=True, blank=True)
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args,**kwargs)
+
+    
+    def __str__(self):
+        return self.title
 
 
 
