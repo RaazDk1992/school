@@ -63,6 +63,7 @@ class Menu(models.Model):
     menuItem = models.CharField(max_length=200, blank=False, null=False)
     menuPath = models.CharField(max_length=100)
     contentType = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    viewRef =  models.CharField(max_length=100)
     is_expandable = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     
