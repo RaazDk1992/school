@@ -144,6 +144,7 @@ def addSlider(request):
             formset  = SliderFormSet(request.POST,request.FILES)
             if formset.is_valid():
                 for form in formset:
+                    print(form)
                     if form.cleaned_data:
                         form.save()
         else:
