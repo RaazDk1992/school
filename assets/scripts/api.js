@@ -20,10 +20,7 @@ function submit(form, path, contentType) {
             title: 'Success',
             message: message,
             position: 'bottomCenter',
-            backgroundColor: getCssVariable('--primary-color-0'),
-            titleColor: getCssVariable('--color-active'),
-            iconColor: '#FFFFFF',  // Set icon color to white
-            messageColor: getCssVariable('--color-active'),
+            backgroundColor: getCssVariable('--primary-color-2'),
             timeout: 3000
         });
 
@@ -38,9 +35,6 @@ function submit(form, path, contentType) {
             message: error.response?.data?.message || 'failed. Please try again!',
             position: 'bottomCenter',
             backgroundColor: '#900C3F',
-            titleColor: '#FFFFFF',
-            iconColor: '#FFFFFF',  // Set icon color to white
-            messageColor: '#FFFFFF',
             timeout: 4000
         });
     });
