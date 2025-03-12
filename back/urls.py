@@ -11,7 +11,6 @@ urlpatterns =[
     path('addmessage/',views.addMessage,name="newmessage"),
     path('addslider/',views.addSlider,name="addslider"),
     path('addmenu/',views.addMenu,name="addmenu"),
-    path("timeline/",views.showTimeLine, name="timeline"),
     path('addcontenttype/',views.addContentType,name="addcontenttype"),
     path('content/create/',views.createContent,name="createcontent"),
     path('bye/',views.sayBye,name="bye"),

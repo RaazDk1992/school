@@ -23,13 +23,6 @@ def sayBye(request):
 })
 
 
-def showTimeLine(request):
-   
-    galleries = Gallery.objects.prefetch_related(
-        Prefetch('image_set', queryset=Image.objects.all())
-    ).order_by('-creation_date')
-    
-    return render(request, 'back/timeline.html',{'galleries':galleries})
 
 
 def userLogin(request):
