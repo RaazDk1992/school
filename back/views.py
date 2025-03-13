@@ -45,18 +45,25 @@ def loadDashboard(request):
             return render(request,"back/login.html")
 def addMenu(request):
     if not request.user.is_authenticated:
-        return redirect('login')  
+        return redirect('login')
 
     menu_form = MenuForm(request.POST or None)
     submenu_formset = SubMenuFormSet(request.POST or None)
 
     if request.method == 'POST':
         if menu_form.is_valid() and submenu_formset.is_valid():
+            print("Received POST data and validated")
             menu = menu_form.save()
-            submenu_instances = submenu_formset.save(commit=False) 
+            submenu_instances = submenu_formset.save(commit=False)
             for submenu in submenu_instances:
                 submenu.menuRef = menu
-                submenu.save()            
+                submenu.save()
+            return redirect("success_url")  
+        else:
+            
+            print("Menu Form Errors:", menu_form.errors)
+            print("Submenu Formset Errors:", submenu_formset.errors)
+
 
     return render(request, 'back/addmenu.html', {'form': menu_form, 'submenu_formset': submenu_formset})
 
