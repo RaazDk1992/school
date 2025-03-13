@@ -17,27 +17,24 @@
     <table class="table table-bordered text-center" id="list">
         <thead class="table-primary">
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Age</th>
+                <th>क्र.स</th>
+                <th>शिर्षक</th>
+                <th>सम्बन्धित file</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+           {% for item in list %}
+
+           <tr>
                 <td>1</td>
-                <td>Alice</td>
-                <td>25</td>
+                <td>{{item.noticeTitle}}</td>
+                <td>
+                    <a href="{{ item.document.url }}" target="_blank">File</a>
+                </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Bob</td>
-                <td>30</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Charlie</td>
-                <td>28</td>
-            </tr>
+
+           {% endfor %}
+           
         </tbody>
     </table>
     {% else %}

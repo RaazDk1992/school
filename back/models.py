@@ -31,7 +31,7 @@ class ContentType(models.Model):
 class Notices(models.Model):
     noticeTitle = models.CharField(max_length=200)
     noticeBody = CKEditor5Field(config_name='extends')
-    document = models.CharField(max_length=200)
+    document = models.FileField(upload_to="notices/")
     is_active = models.BooleanField(default=True)
     def __str__(self):
         return self.noticeTitle

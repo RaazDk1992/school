@@ -19,6 +19,13 @@ def loadNotices(request):
     }
     return render(request,"front\\listview.html",context)
 
+
+def dynamicView(request):
+
+    path = request.path.rstrip('/').split('/')[-1] 
+    print(path)
+    return render(request,'back/login.html')
+
 def showGalleries(request):
    
     galleries = Gallery.objects.prefetch_related(
