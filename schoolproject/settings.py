@@ -79,6 +79,7 @@ TEMPLATES = [
         },
     },
 ]
+APPEND_SLASH = True
 
 WSGI_APPLICATION = 'schoolproject.wsgi.application'
 

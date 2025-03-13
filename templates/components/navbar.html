@@ -33,10 +33,15 @@
                {%if navbar_items%}
 
                {% for item in navbar_items %}
+                
                <li class="nav-item">
-                    <a>{{item.menuPath}}</a>
-                   <a class="nav-link {% if request.path == item.menuPath|default:'' %}active{% endif %}" href="{{ item.menuPath }}">{{ item.menuItem }}</a>
-               </li>
+                <a class="nav-link {% if request.path|cut:'/' == item.menuPath|default:''|cut:'/' %}active{% endif %}" 
+                   href="{{ item.menuPath|default:'' }}/">
+                    {{ item.menuItem }}
+                </a>
+            </li>
+            
+            
                {% endfor %}
 
                {%endif%}
