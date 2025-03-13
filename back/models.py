@@ -69,6 +69,13 @@ class Menu(models.Model):
     
     def __str__(self):
         return self.menuItem
+    
+    def save(self, *args, **kwargs):
+        if not self.menuPath.startswith('/'):
+            self.menuPath = '/' + self.menuPath  # Ensure leading '/'
+        super().save(*args, **kwargs)
+
+        
 class SubMenu(models.Model):
     menuRef = models.ForeignKey(Menu,on_delete=models.CASCADE, blank=False,null=False)
     submenu = models.CharField(max_length=100)
@@ -98,7 +105,6 @@ class Dynamic(models.Model):
         if not self.path:
             self.path = slugify(self.title)
         super().save(*args,**kwargs)
-
     
     def __str__(self):
         return self.title

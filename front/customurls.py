@@ -10,8 +10,8 @@ def dynamicPaths():
         menus = Menu.objects.all()
         for route in menus:
             try:
-                view = import_string(route.viewRef)  # Ensure correct module path
-                url_patterns.append(path(route.menuPath + '/', view))  # Add trailing slash
+                view = import_string(route.viewRef)  
+                url_patterns.append(path(route.menuPath + '/', view)) 
             except ImportError as e:
                 print(f"Error importing view for route {route.menuPath}: {e}")
                 traceback.print_exc()  # Print full error traceback

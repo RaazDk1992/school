@@ -30,11 +30,18 @@
                     <a class="nav-link {% if request.path == '/notices/' %}active{% endif %}" href="{% url 'notices' %}">Notices</a>
                 </li>
                <!-- Dynamic menu items-->
+               {%if navbar_items%}
+
                {% for item in navbar_items %}
                <li class="nav-item">
-                <a class="nav-link" href="{{ item.menuPath|default:'/'|urlize }}">{{ item.menuItem }}</a>
-            </li>
-                {% endfor %}
+                    <a>{{item.menuPath}}</a>
+                   <a class="nav-link {% if request.path == item.menuPath|default:'' %}active{% endif %}" href="{{ item.menuPath }}">{{ item.menuItem }}</a>
+               </li>
+               {% endfor %}
+
+               {%endif%}
+               
+
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="#">About</a>
                 </li>

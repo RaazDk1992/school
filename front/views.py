@@ -23,7 +23,7 @@ def loadNotices(request):
 def dynamicView(request):
 
     path = request.path.rstrip('/').split('/')[-1] 
-    print(path)
+    print(request.path)
     return render(request,'back/login.html')
 
 def showGalleries(request):
