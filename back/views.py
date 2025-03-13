@@ -129,7 +129,7 @@ def dynamicView(request):
 
     path = request.path.rstrip('/').split('/')[-1] 
     print(path)
-    return render(request,'back/login.html')
+    #return render(request,'back/login.html')
 
 def addSlider(request):
     if request.user.is_authenticated:
