@@ -141,15 +141,22 @@ def dynamicView(request):
 def addSlider(request):
     if request.user.is_authenticated:
         if request.method == "POST":
-            formset  = SliderFormSet(request.POST,request.FILES)
+            formset = SliderFormSet(request.POST, request.FILES)
             if formset.is_valid():
                 for form in formset:
-                    print(form)
                     if form.cleaned_data:
                         form.save()
+                return redirect('slider_list')  # Redirect to a relevant page after saving
+            else:
+                # Print errors in the console
+                for form in formset:
+                    if form.errors:
+                        print(form.errors.as_text())  # Print errors in console
+
+                return render(request, 'back/addslider.html', {'formset': formset})
         else:
             blank_formset = SliderFormSet()
-            return render(request,'back/addslider.html',{'formset':blank_formset})
+            return render(request, 'back/addslider.html', {'formset': blank_formset})
     else:
         return redirect('login')
 def addArticle(request):
