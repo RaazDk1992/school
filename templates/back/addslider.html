@@ -10,25 +10,25 @@
             {% for form in formset %}
             <div class="form-group d-flex align-items-center gap-3 w-100 original-form">
                 
-                <!-- Title Field (Largest) -->
+                <!-- Title Field -->
                 <div class="flex-grow-1">
                     <label class="form-label">Title</label>
                     {{ form.title }}
                 </div>
 
-                <!-- File Picker (Medium) -->
+                <!-- File Picker -->
                 <div class="col-md-3">
                     <label class="form-label">Image</label>
                     {{ form.image }}
                 </div>
 
-                <!-- Checkbox (Small) -->
+                <!-- Checkbox -->
                 <div class="col-auto d-flex flex-column align-items-center">
                     <label class="form-label">Active</label>
                     {{ form.is_active }}
                 </div>
 
-                <!-- Add Button (Small) -->
+                <!-- Add Button -->
                 <div class="col-auto d-flex align-items-end">
                     <button type="button" class="btn btn-success btn-sm add-form">+</button>
                 </div>
@@ -47,7 +47,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const extraFormsContainer = document.getElementById("extra_forms");
-        const totalForms = document.querySelector('#id_form-TOTAL_FORMS');
+        const totalForms = document.querySelector("#id_form-TOTAL_FORMS");
         let formNum = parseInt(totalForms.value); // Get the current form count
 
         document.addEventListener("click", function (event) {
@@ -64,14 +64,24 @@
             let newForm = document.querySelector(".original-form").cloneNode(true);
             formNum++;
 
-           
+            // Update names and IDs properly
             newForm.querySelectorAll("input, select, textarea").forEach(input => {
                 if (input.name) {
                     input.name = input.name.replace(/-\d+-/, `-${formNum}-`);
                     input.id = input.id.replace(/-\d+-/, `-${formNum}-`);
-                    input.value = ""; // Clear values
+                    
+                    // Reset text inputs
+                    if (input.type !== "checkbox") {
+                        input.value = ""; 
+                    }
                 }
             });
+
+            // Ensure checkbox (is_active) remains checked by default
+            let checkbox = newForm.querySelector("input[type='checkbox']");
+            if (checkbox) {
+                checkbox.checked = true; // Ensure it remains checked
+            }
 
             // Remove 'add-form' button from new form
             newForm.querySelector(".add-form").remove();
@@ -95,6 +105,29 @@
             formNum--;
             totalForms.value = formNum;
         }
+
+        // Prevent submission of empty forms
+        document.getElementById("slider-form").addEventListener("submit", function (event) {
+            let validForms = 0;
+
+            document.querySelectorAll(".original-form, #extra_forms .original-form").forEach((form, index) => {
+                let title = form.querySelector("input[name*='title']").value.trim();
+                let image = form.querySelector("input[name*='image']").value.trim();
+                
+                if (title || image) {
+                    validForms++;  // Count only non-empty forms
+                } else {
+                    form.remove();  // Remove empty forms before submission
+                }
+            });
+
+            totalForms.value = validForms; // Update form count to match only valid forms
+
+            if (validForms === 0) {
+                event.preventDefault(); // Prevent empty submission
+                alert("At least one form must be filled before submission.");
+            }
+        });
     });
 </script>
 {% endblock %}
