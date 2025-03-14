@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container d-flex align-items-center justify-content-center col-lg-10">
-    <form method="POST" enctype="multipart/form-data" action="" id="slider-form" class="w-100 p-4">
+    <form method="POST" enctype="multipart/form-data" action="" id="slider_form" class="w-100 p-4">
         {% csrf_token %}
         {{ formset.management_form }}
 
@@ -107,7 +107,8 @@
         }
 
         // Prevent submission of empty forms
-        document.getElementById("slider-form").addEventListener("submit", function (event) {
+        document.getElementById("slider_form").addEventListener("submit", function (event) {
+            event.preventDefault(); 
             let validForms = 0;
 
             document.querySelectorAll(".original-form, #extra_forms .original-form").forEach((form, index) => {
@@ -124,10 +125,19 @@
             totalForms.value = validForms; // Update form count to match only valid forms
 
             if (validForms === 0) {
-                event.preventDefault(); // Prevent empty submission
+                event.preventDefault(); 
                 alert("At least one form must be filled before submission.");
             }
+
+            
+            addSliders();
         });
+
+    function addSliders() {
+        const form = document.getElementById("slider_form");
+        submit(form,'');
+    }
+     
     });
 </script>
 {% endblock %}

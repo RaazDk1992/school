@@ -139,26 +139,24 @@ def dynamicView(request):
     #return render(request,'back/login.html')
 
 def addSlider(request):
-    if request.user.is_authenticated:
-        if request.method == "POST":
-            formset = SliderFormSet(request.POST, request.FILES)
-            if formset.is_valid():
-                for form in formset:
-                    if form.cleaned_data:
-                        form.save()
-                return redirect('slider_list')  # Redirect to a relevant page after saving
-            else:
-                # Print errors in the console
-                for form in formset:
-                    if form.errors:
-                        print(form.errors.as_text())  # Print errors in console
+    if not request.user.is_authenticated:
+        return redirect('login') 
 
-                return render(request, 'back/addslider.html', {'formset': formset})
+    if request.method == "POST":
+        formset = SliderFormSet(request.POST, request.FILES)
+        if formset.is_valid():
+            for form in formset:
+                if form.cleaned_data:
+                    form.save()
+            return JsonResponse({"message": "Sliders added successfully!"}, status=200)
+
         else:
-            blank_formset = SliderFormSet()
-            return render(request, 'back/addslider.html', {'formset': blank_formset})
-    else:
-        return redirect('login')
+            errors = {f"form_{i}": form.errors.as_json() for i, form in enumerate(formset) if form.errors}
+            return JsonResponse({"error": "Validation failed", "errors": errors}, status=400)
+
+    # Return formset for initial rendering
+    blank_formset = SliderFormSet()
+    return render(request, 'back/addslider.html', {'formset': blank_formset})
 def addArticle(request):
     if request.user.is_authenticated:
         if request.method =="POST":
