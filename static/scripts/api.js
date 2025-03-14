@@ -5,11 +5,12 @@ function getCssVariable(variableName) {
 function submit(form, path, contentType) {
     const formData = new FormData(form);
     const encType = form.enctype;
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
     axios.post(path, formData, {
         headers: { 
             "Content-Type": encType,
-            "X-CSRFToken": getCsrfToken() 
+            "X-CSRFToken": csrfToken
         },
         withCredentials: true
     })
