@@ -9,9 +9,10 @@ from back.forms.Dyamic import DynamicForm
 from back.forms.contentTypes import ContentTypeForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.forms.newslider import SliderForm,SliderFormSet
-from back.models import Image,Gallery, Dynamic
+from back.models import Image,Gallery, Dynamic,Article,Notices
 from django.db.models import Prefetch
 from collections import defaultdict
+import os
 
 # Create your views here.
 
@@ -40,9 +41,45 @@ def userLogin(request):
 def loadDashboard(request):
     if request.method =="GET":
         if request.user.is_authenticated:
-            return render(request,"back/dashboard.html")
+            article_list = Article.objects.all()
+            notice_list = Notices.objects.all()
+            gallery_list = Gallery.objects.all()
+          
+            context ={
+                'article_list':article_list,
+                'notice_list': notice_list,
+                'gallery_list':gallery_list
+            }
+            return render(request,"back/dashboard.html",context)
         else:
-            return render(request,"back/login.html")
+            return redirect('login')
+def editNotice(request, notice_id):
+    if request.user.is_authenticated:
+        notice = get_object_or_404(Notices, id=notice_id)
+        old_file = notice.document.path if notice.document else None
+        
+
+        if request.method == "POST":
+            noticeForm = NoticeForm(request.POST, request.FILES, instance=notice)
+            if noticeForm.is_valid():
+                
+                if "document" in request.FILES: 
+                    print(f"Old file :{old_file}")
+                    if old_file and os.path.exists(old_file):
+                        
+                        os.remove(old_file)
+                    else:
+                        print("file not found")
+                noticeForm.save()
+                return redirect("dashboard")  # Redirect to the list or details page after updating
+        
+        else:  # Handles GET request
+            noticeForm = NoticeForm(instance=notice)
+        
+        return render(request, "back/addnotice.html", {"form": noticeForm})
+
+    return redirect("login")  # Redirect unauthorized users
+
 def addMenu(request):
     if not request.user.is_authenticated:
         return redirect('login')
