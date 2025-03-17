@@ -113,7 +113,27 @@
         <!-- Gallery Section -->
         <div id="gallery" class="tab-pane fade">
             <h4>Gallery Section</h4>
-            <p>Manage gallery here.</p>
+           
+
+            {% if gallery_list %}
+            <ul class="list-group">
+                {% for gallery in gallery_list %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ gallery.galleryName }}</span>
+                    <div>
+                        <a href="{% url 'edit_gallery' gallery.id %}" class="btn btn-sm btn-warning">
+                            <i class="fa fa-edit"></i> Edit
+                        </a>
+                        <button class="btn btn-sm btn-danger" onclick="deleteNotice({{ gallery.id }})">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted">No notices published yet.</p>
+        {% endif %}
         </div>
     </div>
 </div>

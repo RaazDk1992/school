@@ -57,8 +57,6 @@ def editNotice(request, notice_id):
     if request.user.is_authenticated:
         notice = get_object_or_404(Notices, id=notice_id)
         old_file = notice.document.path if notice.document else None
-        
-
         if request.method == "POST":
             noticeForm = NoticeForm(request.POST, request.FILES, instance=notice)
             if noticeForm.is_valid():
@@ -79,6 +77,24 @@ def editNotice(request, notice_id):
         return render(request, "back/addnotice.html", {"form": noticeForm})
 
     return redirect("login")  # Redirect unauthorized users
+
+def edit_gallery(request, gallery_id):
+    gallery = get_object_or_404(Gallery, id=gallery_id)
+    images = Image.objects.filter(gallery=gallery)
+    if request.method == "POST":
+        gallery_form = GalleryForm(request.POST, instance=gallery)
+        formset = GalleryImageFormset(request.POST, request.FILES, queryset=images)
+
+        if gallery_form.is_valid() and formset.is_valid():
+            gallery_form.save()
+            formset.save()
+    else:
+        gallery_form = GalleryForm(instance=gallery)
+        formset = GalleryImageFormset(queryset=images)
+        return render(request, 'back/editgalary.html', {
+        'gallery_form': gallery_form,
+        'gallery_image_formset': formset
+    })
 
 def addMenu(request):
     if not request.user.is_authenticated:
@@ -119,8 +135,7 @@ def addGallery(request):
                 images_instances = [Image()]
 
             for idx, image in enumerate(images_instances):
-                print("X")
-                image_files = request.FILES.getlist(f'image_{idx+1}')  # 'image_{idx+1}' corresponds to input names
+                image_files = request.FILES.getlist(f'image_{idx+1}')  
                 for image_file in image_files:
                     # Create a new image object for each uploaded file
                     gallery_image = Image.objects.create(

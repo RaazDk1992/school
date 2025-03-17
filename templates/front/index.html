@@ -48,16 +48,22 @@
     <div class="mt-5 container">
         <div class="row">
             <div class="col-md-12">
-                <h3>Our Vision</h3>
-                <img src="{% static 'img/vson.png'%}"> &nbsp;<span>xx</span>
+                <h3 id="vsion" class="section_header">nIo</h3>
+                <img src="{% static 'img/vson.png'%}"> &nbsp;<span id="vision_message">Æ:YffgLo cfjZostf cg';f/sf] u'0f:t/Lo lzfIff .æ</span>
             </div>
         </div>
     </div>
+    <hr  class="hr-text">
     
     <!-- Messages Section -->
-    <div class="container d-flex p-3 gap-3 flex-wrap mt-5">
+     <div class="container mt-3">
+        <h3 class="section_header">k|ltlglwHo"x?af6 z'esfdgf ;Gb]z</h3>
+       
+     </div>
+    <div class="container d-flex p-3 gap-3 flex-wrap mt-1">
+
         {% for message in messages %}
-        <div class="card mb-3 text-center" style="max-width: 540px;">
+        <div class="card mb-3 text-center col-sm-4">
           <div class="card-body">
             <div class="avatar-container">
                 <img src="{{ message.image.url }}" alt="{{ message.title }}">
@@ -70,4 +76,6 @@
         <p>No messages available.</p>
         {% endfor %}
     </div>
+    {% include "front/testimonial.html" %}
+
 {% endblock %}

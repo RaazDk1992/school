@@ -37,15 +37,21 @@
  }
  
  @font-face {
-    font-family: 'rolest';
-    src: url('/static/fonts/Rolest.ttf') format('opentype');
+    font-family: 'arap';
+    src: url('/static/fonts/arap.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
  }
  
  @font-face {
-    font-family: 'milky';
-    src: url('/static/fonts/milky.woff') format('woff');
+    font-family: 'adarsh';
+    src: url('/static/fonts/adarsh.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+ }
+ @font-face {
+    font-family: 'girija';
+    src: url('/static/fonts/amsgi.ttf') format('truetype');
     font-weight: bold;
     font-style: normal;
  }

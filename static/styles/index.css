@@ -1,3 +1,4 @@
+@import url('global.css');
 .carousel-indicators button {
     background-color: rgb(7, 101, 155) !important; 
     width: 12px; 
@@ -65,4 +66,17 @@
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+}
+
+.section_header{
+    font-family: 'arap';
+    font-weight: bolder;
+    font-size: xx-large;
+    color:var(--primary-color-0);
+}
+#vision_message{
+    font-family: 'adarsh';
+    font-weight: bolder;
+    font-size: xx-large;
+
 }
