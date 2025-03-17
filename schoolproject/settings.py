@@ -75,6 +75,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'front.context_processors.navbar_items',
+                'front.context_processors.load_testimonials',
             ],
         },
     },

@@ -7,7 +7,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-white text-center">
-                <h2 class="section-title testimonial-head">AnauBava</h2>
+                <h2 class="section-title testimonial-head">AnauBava </h2>
             </div>
         </div>
     </div>
@@ -20,24 +20,23 @@
             <div id="testimonialslide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
                 <div class="carousel-inner">
                     <!-- Slide 1 -->
-                    <div class="carousel-item active">
+                    {% for testimonial in  testimonials%}
+
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="testimonial-card">
-                            <img src="https://via.placeholder.com/85" alt="User Image" class="testimonial-img">
-                            <p class="testimonial-text">"This platform exceeded my expectations! Excellent service, professional team, and top-notch quality!"</p>
-                            <p class="testimonial-name">Jane Doe</p>
-                            <p class="testimonial-role">Marketing Manager, TechCorp</p>
+                            <div class="testimonial-img">
+                                <img src="{{testimonial.image.url}}" alt="User Image" />
+                            </div>
+                            
+                            <p class="testimonial-text">{{testimonial.body}}</p>
+                            <p class="testimonial-name">{{testimonial.name}}</p>
+                            <p class="testimonial-role">{{testimonial.extra}}</p>
                         </div>
                     </div>
 
-                    <!-- Slide 2 -->
-                    <div class="carousel-item">
-                        <div class="testimonial-card">
-                            <img src="https://via.placeholder.com/85" alt="User Image" class="testimonial-img">
-                            <p class="testimonial-text">"Amazing platform! Highly recommended."</p>
-                            <p class="testimonial-name">John Smith</p>
-                            <p class="testimonial-role">CEO, Innovate Inc.</p>
-                        </div>
-                    </div>
+
+                    {% endfor %}
+                    
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-from back.models import Menu
+from back.models import Menu,Testimonials
 
 def navbar_items(request):
     items = Menu.objects.all()
@@ -9,4 +9,8 @@ def navbar_items(request):
             item.menuPath = '/' + item.menuPath  
 
     return {"navbar_items": items}  
+
+def load_testimonials(request):
+    items = Testimonials.objects.all()
+    return {"testimonials":items}
 
