@@ -92,7 +92,7 @@
                            
                         
                             {%for notice in notices%}
-                                <li class="list-group-item">{{notice.noticeTitle}}</li>
+                                <li class="list-group-item"><a href="{{notice.document.url}}">{{notice.noticeTitle}}</a></li>
 
                                 {%empty%}
                                 <div class="alert alert-danger" role="alert">
