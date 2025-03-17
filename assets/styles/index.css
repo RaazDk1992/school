@@ -1,3 +1,4 @@
+@import url('global.css');
 .carousel-indicators button {
     background-color: rgb(7, 101, 155) !important; 
     width: 12px; 
@@ -10,7 +11,7 @@
     object-fit: cover;
 }
 .carousel-caption h5 {
-    background-color: rgba(0, 0, 255, 0.4); /* #0000FF with 40% opacity */
+    background-color: rgba(0, 0, 255, 0.4); 
     display: inline-block;
     padding: 5px 10px;
     border-radius: 5px;
@@ -65,4 +66,17 @@
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+}
+
+.section_header{
+    font-family: 'arap';
+    font-weight: bolder;
+    font-size: xx-large;
+    color:var(--primary-color-0);
+}
+#vision_message{
+    font-family: 'adarsh';
+    font-weight: bolder;
+    font-size: xx-large;
+
 }
