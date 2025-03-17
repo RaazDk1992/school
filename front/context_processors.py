@@ -9,3 +9,4 @@ def navbar_items(request):
             item.menuPath = '/' + item.menuPath  
 
     return {"navbar_items": items}  
+
