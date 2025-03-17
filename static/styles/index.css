@@ -61,6 +61,14 @@
     justify-content: center;
     margin: auto;
 }
+.event_date{
+    background-color: var(--primary-color-2);
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    margin: 2px;
+
+}
 .avatar-container img {
     width: 100%;
     height: 100%;

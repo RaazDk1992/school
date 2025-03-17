@@ -87,10 +87,36 @@
 
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <p>Home Content</p>
+                       
+                        <ul class="list-group">
+                           
+                        
+                            {%for notice in notices%}
+                                <li class="list-group-item">{{notice.noticeTitle}}</li>
+
+                                {%empty%}
+                                <div class="alert alert-danger" role="alert">
+                                    No notices published yet.
+                                  </div>
+                            {% endfor %}
+                        </ul>
+
+                        
                     </div>
                     <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <p>Profile Content</p>
+                       
+                       <ul class="list-group">
+                       {%for event in events%}
+                       <li class="list-group-item"><span class="event_date">{{event.date_np}}</span>&nbsp;<span>{{event.event}}</span></li>
+
+                       {%empty%}
+                        <div class="alert alert-danger" role="alert">
+                            No Events published Yet!!
+                        </div>
+                       {%endfor %}
+                        </ul>
+
+                     
                     </div>
                    
                 </div>

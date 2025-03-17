@@ -1,14 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from back.models import Sliders,Message,Notices,Gallery,Image
+from back.models import Sliders,Message,Notices,Gallery,Image,Events
 from django.db.models import Prefetch
 
 def index(request):
     sliders = Sliders.objects.filter(is_active=True)
     messages = Message.objects.filter(is_active = True)
+    events = Events.objects.all()
+    notices = Notices.objects.all()
     context = {
         'sliders': sliders,
-        'messages': messages
+        'messages': messages,
+        'events':events,
+        'notices':notices
     }
     return render(request,"front\\index.html",context)
 def loadNotices(request):
