@@ -7,7 +7,7 @@ class EventsForm(forms.ModelForm):
         fields='__all__'
         widgets = {
             'date_np': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Choose date','id':'date_picker'}),
-            'date_en': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Choose date','id':'date_en'}),
+            'date_en': forms.HiddenInput(attrs={'class': 'form-control', 'placeholder': 'Choose date','id':'date_en'}),
             'event':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter  Event name'}),
         }
     

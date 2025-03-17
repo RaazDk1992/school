@@ -1,12 +1,11 @@
 @import url('global.css');
-.btn.btn-outline-primary:hover, .bg-primary {
+
+/* Primary background */
+.bg-primary {
     background-color: #0cb4ce !important;
 }
 
-.section-medium {
-    padding: 25px 0px;
-}
-
+/* Section Arrow Fix */
 .section-arrow-primary-color.section-arrow--bottom-center:after {
     background-color: #0cb4ce;
     border-right-color: #0cb4ce;
@@ -14,66 +13,50 @@
 }
 
 .section-arrow--bottom-center:after {
-    z-index: 1;
+    content: "";
     position: absolute;
     left: 50%;
-    margin-left: -15px;
-    content: "";
-    bottom: -15px;
-    width: 30px;
-    height: 30px;
-    border-right: 1px solid #262626;
-    border-bottom: 1px solid #262626;
+    bottom: -5px; /* Adjusted to ensure visibility */
+    width: 20px;
+    height: 20px;
     transform: rotate(45deg);
-    background-color: #262626;
+    background-color: #0cb4ce;
+    border-right: 2px solid #0cb4ce; 
+    border-bottom: 2px solid #0cb4ce;
+    z-index: 2;
 }
 
-.text-white h1, .text-white h2, .text-white h3, .text-white h4, .text-white h5, .text-white h6 {
-    color: white !important;
-}
-
-.section-title {
-    font-size: 32px;
-    font-weight: 600;
-    margin-top: 0.45em;
-    margin-bottom: 0.35em;
-    color: #303133;
-    font-family: Poppins;
-    letter-spacing: -0.02em;
-}
-
-.section-sub-title {
-    font-size: 18px;
-    margin-bottom: 20px;
-    font-weight: 400;
-    font-family: Poppins;
-}
-
-.special-heading.line span:before, .special-heading.line span:after, .footer.footer-minimal, .t-bordered {
-    border-top-color: #eaeaea;
-}
-
-.t-bordered {
-    border-top: 1px solid #eaeaea;
-}
-
-.section-primary {
-    padding: 75px 0px;
-}
-
-section {
+/* Reduce Spacing Between Title and Slider */
+.section-medium {
+    padding: 10px 0px !important; /* Reduced padding */
     position: relative;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-.testimonial-head{
-    font-family: 'girija';
+.testimonial-head {
+    font-family: 'Girija', sans-serif;
     font-weight: bold;
     font-size: 2rem;
+    margin-bottom: 5px !important; 
 }
 
+/* Adjust slider section to remove excessive gap */
+.section-primary {
+    padding: 50px 0px 30px 0px !important;
+    margin-top: -20px !important; 
+}
 
+/* Testimonial Styling */
+.testimonial-card {
+    max-width: 600px;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    background: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid #0cb4ce;
+}
+
+.section-arrow-primary-color {
+    position: relative;
+    z-index: 2;
+}
