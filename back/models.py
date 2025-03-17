@@ -52,6 +52,14 @@ class Events(models.Model):
     event = models.CharField(max_length=200)
     def __str__(self):
         return self.event
+
+class Testimonials(models.Model):
+    name = models.CharField(max_length=200)
+    body = models.TextField()
+    image = models.ImageField(upload_to='testimonial/images/')
+    extra = models.CharField(max_length=200)
+    def __str__(self):
+        return self.name
     
 class Image(models.Model):
     gallery = models.ForeignKey(Gallery,on_delete=models.CASCADE)

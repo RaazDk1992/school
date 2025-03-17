@@ -11,6 +11,7 @@ urlpatterns =[
     path("edit_gallery/<int:gallery_id>", views.edit_gallery, name="edit_gallery"),
     path('newgallery',views.addGallery,name="newgallery"),
     path('addmessage/',views.addMessage,name="newmessage"),
+    path('addtestimonial',views.addTestimonial,name="addtestimonial"),
     path('addslider/',views.addSlider,name="addslider"),
     path('addevents/',views.addEvents,name="addevents"),
     path('addmenu/',views.addMenu,name="addmenu"),

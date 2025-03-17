@@ -9,6 +9,7 @@ from back.forms.Dyamic import DynamicForm
 from back.forms.contentTypes import ContentTypeForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.forms.Events import EventsForm
+from back.forms.Testimonial import TestimonialForm
 from back.forms.newslider import SliderForm,SliderFormSet
 from back.models import Image,Gallery, Dynamic,Article,Notices
 from django.db.models import Prefetch
@@ -108,6 +109,20 @@ def addEvents(request):
     else:
         eventForm = EventsForm()
     return render(request, 'back/addevents.html', {'form': eventForm})
+
+def addTestimonial(request):
+    if request.user.is_authenticated:
+
+        if request.method =="POST":
+            testimonialForm = TestimonialForm(request.POST,request.FILES)
+            if testimonialForm.is_valid():
+                testimonialForm.save()
+        else:
+            form = TestimonialForm()
+            return render(request,'back/addTestimonial.html',{'form':form})
+
+    else:
+        return redirect('login')
 
 def addMenu(request):
     if not request.user.is_authenticated:
