@@ -8,6 +8,7 @@ from back.forms.messages import MessageForm
 from back.forms.Dyamic import DynamicForm
 from back.forms.contentTypes import ContentTypeForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
+from back.forms.Events import EventsForm
 from back.forms.newslider import SliderForm,SliderFormSet
 from back.models import Image,Gallery, Dynamic,Article,Notices
 from django.db.models import Prefetch
@@ -95,6 +96,18 @@ def edit_gallery(request, gallery_id):
         'gallery_form': gallery_form,
         'gallery_image_formset': formset
     })
+
+def addEvents(request):
+    if not request.user.is_authenticated:
+        return redirect('login') 
+
+    if request.method == "POST":
+       eventForm = EventsForm(request.POST)
+       if eventForm.is_valid():
+           eventForm.save()
+    else:
+        eventForm = EventsForm()
+    return render(request, 'back/addevents.html', {'form': eventForm})
 
 def addMenu(request):
     if not request.user.is_authenticated:

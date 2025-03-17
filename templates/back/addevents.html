@@ -1,0 +1,41 @@
+{% extends 'meta.html' %}
+
+{% block content %}
+<script src="//unpkg.com/nepali-date-picker@2.0.2/dist/nepaliDatePicker.min.js"></script>
+<link rel="stylesheet" href="//unpkg.com/nepali-date-picker@2.0.2/dist/nepaliDatePicker.min.css">
+
+<div class="container d-flex align-items-center justify-content-center col-lg-10">
+    <form method="POST" enctype="multipart/form-data" action="" id="slider_form" class="w-100 p-4">
+        {% csrf_token %}
+      
+
+        <div id="form-container" class="w-100">
+           {{form.as_p}}
+        </div>
+
+        <!-- New forms will be added here -->
+        <div id="extra_forms" class="w-100"></div>
+
+        <input type="submit" name="submit" value="Submit" class="btn btn-primary btn-sm mt-3 w-auto" />
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+
+        $("#date_picker").nepaliDatePicker({
+            dateFormat: "%y-%m-%d",
+            closeOnDateSelect: true
+        });
+
+
+        $("#date_picker").on("dateSelect", function (event) {
+           
+            var datePickerData = event.datePickerData;
+            date_en = datePickerData.adDate.toISOString().split("T")[0];
+            console.log(date_en)
+            $('#date_en').val(date_en);
+        });
+    });
+</script>
+{% endblock %}
