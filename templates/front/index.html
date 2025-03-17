@@ -9,9 +9,10 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="container mt-1">
+        <!-- Carousel -->
         <div id="indexpagecarousel" class="carousel slide" data-bs-ride="carousel">
-            <!-- Carousel Items -->
             <div class="carousel-inner">
                 {% for slider in sliders %}
                 <div class="carousel-item {% if forloop.first %}active{% endif %}">
@@ -24,17 +25,17 @@
                 {% endfor %}
             </div>
 
-            <!-- Carousel Controls -->
+            <!-- Controls -->
             <button class="carousel-control-prev" type="button" data-bs-target="#indexpagecarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="carousel-control-prev-icon"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#indexpagecarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="carousel-control-next-icon"></span>
                 <span class="visually-hidden">Next</span>
             </button>
 
-            <!-- Carousel Indicators -->
+            <!-- Indicators -->
             <div class="carousel-indicators">
                 {% for slider in sliders %}
                 <button type="button" data-bs-target="#indexpagecarousel" data-bs-slide-to="{{ forloop.counter0 }}"
@@ -44,38 +45,60 @@
         </div>
     </div>
 
-    <!--Vision Section -->
-    <div class="mt-5 container">
-        <div class="row">
-            <div class="col-md-12">
-                <h3 id="vsion" class="section_header">nIo</h3>
-                <img src="{% static 'img/vson.png'%}"> &nbsp;<span id="vision_message">Æ:YffgLo cfjZostf cg';f/sf] u'0f:t/Lo lzfIff .æ</span>
-            </div>
-        </div>
+    <!-- Vision Section -->
+    <div class="container mt-5 text-center">
+        <h3 id="vsion" class="section_header">nIo</h3>
+        <img src="{% static 'img/vson.png' %}" alt="Vision"> &nbsp;
+        <span id="vision_message">Æ:YffgLo cfjZostf cg';f/sf] u'0f:t/Lo lzfIff .æ</span>
     </div>
-    <hr  class="hr-text">
-    
-    <!-- Messages Section -->
-     <div class="container mt-3">
-        <h3 class="section_header">k|ltlglwHo"x?af6 z'esfdgf ;Gb]z</h3>
-       
-     </div>
-    <div class="container d-flex p-3 gap-3 flex-wrap mt-1">
+    <hr class="hr-text">
 
-        {% for message in messages %}
-        <div class="card mb-3 text-center col-sm-4">
-          <div class="card-body">
-            <div class="avatar-container">
-                <img src="{{ message.image.url }}" alt="{{ message.title }}">
+    <!-- Messages and Pills Section -->
+    <div class="container mt-3">
+        <div class="row g-3 align-items-start">
+            
+            <!-- Messages Section -->
+            <div class="col-sm-8 d-flex flex-wrap gap-3">
+                {% for message in messages %}
+                <div class="card text-center" style="width: 18rem;">
+                    <div class="card-body">
+                        <div class="avatar-container">
+                            <img src="{{ message.image.url }}" alt="{{ message.title }}">
+                        </div>
+                        <h5 class="card-title mt-2">{{ message.title }}</h5>
+                        <p class="card-text">{{ message.message }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No messages available.</p>
+                {% endfor %}
             </div>
-            <h5 class="card-title mt-2">{{ message.title }}</h5>
-            <p class="card-text">{{ message.message }}</p>
-          </div>
+
+            <!-- Pills Section -->
+            <div class="col-sm-4">
+                <ul class="nav nav-pills mb-3 custom-pills d-flex justify-content-center" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">सूचना</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Events</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <p>Home Content</p>
+                    </div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <p>Profile Content</p>
+                    </div>
+                   
+                </div>
+            </div>
+
         </div>
-        {% empty %}
-        <p>No messages available.</p>
-        {% endfor %}
     </div>
+
     {% include "front/testimonial.html" %}
 
 {% endblock %}

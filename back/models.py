@@ -45,6 +45,14 @@ class Gallery(models.Model):
 
     def __str__(self):
         return self.galleryName
+    
+class Events(models.Model):
+    date_en = models.DateField()
+    date_np = models.CharField(max_length=20)
+    event = models.CharField(max_length=200)
+    def __str__(self):
+        return self.event
+    
 class Image(models.Model):
     gallery = models.ForeignKey(Gallery,on_delete=models.CASCADE)
     image = models.ImageField(upload_to='gallery_images/')  

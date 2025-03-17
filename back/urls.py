@@ -12,6 +12,7 @@ urlpatterns =[
     path('newgallery',views.addGallery,name="newgallery"),
     path('addmessage/',views.addMessage,name="newmessage"),
     path('addslider/',views.addSlider,name="addslider"),
+    path('addevents/',views.addEvents,name="addevents"),
     path('addmenu/',views.addMenu,name="addmenu"),
     path('addcontenttype/',views.addContentType,name="addcontenttype"),
     path('content/create/',views.createContent,name="createcontent"),

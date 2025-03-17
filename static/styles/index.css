@@ -80,3 +80,35 @@
     font-size: xx-large;
 
 }
+
+
+.custom-pills .nav-link {
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-color: transparent !important;
+    color: #007bff;
+    padding: 8px 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-pills .nav-link:hover {
+    border-color: #007bff;
+}
+
+.custom-pills .nav-link.active {
+    border: 2px solid #007bff;
+    background-color: transparent !important;
+    color: #007bff;
+}
+
+.avatar-container img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.carousel-item img {
+    object-fit: cover;
+    height: 400px;
+}
