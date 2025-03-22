@@ -22,5 +22,4 @@ def dynamicPaths():
     print("Dynamic URLs added:", url_patterns)
     return url_patterns
 
-# Ensure calling the function returns the list of patterns
 dynamic_patterns = lambda: dynamicPaths()

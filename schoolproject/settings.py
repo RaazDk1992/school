@@ -59,6 +59,7 @@ MIDDLEWARE = [
     'request.middleware.RequestMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'back.middleware.DynamicURLMiddleware',
 ]
 
 ROOT_URLCONF = 'schoolproject.urls'
@@ -76,6 +77,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'front.context_processors.navbar_items',
                 'front.context_processors.load_testimonials',
+                
             ],
         },
     },
