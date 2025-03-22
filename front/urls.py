@@ -1,5 +1,5 @@
 from django.urls import path,include
-from front.customurls import dynamicPaths
+from front.customurls import dynamicPaths,dynamic_patterns
 from . import views
 urlpatterns =[
     
@@ -8,5 +8,5 @@ urlpatterns =[
     path('gallery/',views.showGalleries,name="gallery"),
 ]
 
-urlpatterns.extend(dynamicPaths())
+urlpatterns +=dynamicPaths()
 
