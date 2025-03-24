@@ -9,6 +9,7 @@ from back.forms.messages import MessageForm
 from back.forms.Dyamic import DynamicForm
 from back.forms.contentTypes import ContentTypeForm
 from back.forms.newgallery import GalleryForm,GalleryImageFormset
+from back.forms.editGallery import EditGalleryForm,EditGalleryImageFormset
 from back.forms.Events import EventsForm
 from back.forms.Testimonial import TestimonialForm
 from back.forms.newslider import SliderForm,SliderFormSet
@@ -98,22 +99,30 @@ def editNotice(request, notice_id):
 def edit_gallery(request, gallery_id):
     gallery = get_object_or_404(Gallery, id=gallery_id)
     images = Image.objects.filter(gallery=gallery)
-
+    
     if request.method == "POST":
-        gallery_form = GalleryForm(request.POST, instance=gallery)
-        formset = GalleryImageFormset(request.POST, request.FILES, queryset=images)
-
+        gallery_form = EditGalleryForm(request.POST, instance=gallery)
+        formset = EditGalleryImageFormset(request.POST, request.FILES, queryset=images)
+        
         if gallery_form.is_valid() and formset.is_valid():
             gallery_form.save()
-            formset.save()
+            for form in formset:
+                if form.cleaned_data.get('DELETE'):
+                    form.instance.delete()
+                else:
+                    image = form.save(commit=False)
+                    image.gallery = gallery
+                    image.save()
+            return redirect('gallery_list')  # Redirect to gallery list or appropriate page
     else:
-        gallery_form = GalleryForm(instance=gallery)
-        formset = GalleryImageFormset(queryset=images)
+        gallery_form = EditGalleryForm(instance=gallery)
+        formset = EditGalleryImageFormset(queryset=images)
+    
+        return render(request, "back/editgalary.html", {
+            "gallery_form": gallery_form,
+            "gallery_image_formset": formset,
+        })
 
-    return render(request, "back/editgalary.html", {
-        "gallery_form": gallery_form,
-        "gallery_image_formset": formset,
-    })
 
 def addEvents(request):
     if not request.user.is_authenticated:
@@ -254,6 +263,8 @@ def addSlider(request):
     # Return formset for initial rendering
     blank_formset = SliderFormSet()
     return render(request, 'back/addslider.html', {'formset': blank_formset})
+
+# Method to  add new article, if user is authenticated, check if form is valid, otherwise goto authentication
 def addArticle(request):
     if request.user.is_authenticated:
         if request.method =="POST":
@@ -271,7 +282,9 @@ def addArticle(request):
             return render(request,'back/addarticle.html',{'form':aticleForm})
     else:
         return render(request,"back/addarticle.html")
-    
+##
+# Method to add new notice.
+#     
 def addNotice(request):
     if request.user.is_authenticated:
         NoticeImageFormSet = modelformset_factory(
@@ -315,19 +328,18 @@ def addNotice(request):
                                 document = doc
                             )
                             notice_docs.save()
-
-                
-
+                return JsonResponse({"status":"Success","message":f"Notice :{notice_instance.noticeTitle} Saved!!"},status=200)
             else:
-               all_errors ={}
-               all_errors["form errors"] = form.errors.as_json
-               all_errors["notice_image_errors"] = [
-                   form.errors.as_json() for form in notice_image_formset.forms if form.errors
-               ]
-               all_errors["notice_documents_errors"] =[
-                   form.errors.as_json() for form in notice_document_formset.forms if form.errors
-               ]
-               
+                
+                    all_errors ={}
+                    all_errors["form errors"] = form.errors.as_json
+                    all_errors["notice_image_errors"] = [
+                        form.errors.as_json() for form in notice_image_formset.forms if form.errors
+                    ]
+                    all_errors["notice_documents_errors"] =[
+                        form.errors.as_json() for form in notice_document_formset.forms if form.errors
+                    ]
+                    return JsonResponse({"status":"fail","message":f"Notice :{notice_instance.noticeTitle} Could not be published!!"})
 
         if request.method =="GET":
             noticeForm =  NoticeForm()
@@ -338,7 +350,7 @@ def addNotice(request):
                 'image_formset':notice_image_formset,
                 'document_Formset':notice_document_formset})
     else:
-        return render(request,"back/addarticle.html")
+        return redirect('login')
     
 
 def addMessage(request):

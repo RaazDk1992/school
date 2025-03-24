@@ -3,7 +3,7 @@
 {% block content %}
     <div class="container d-flex align-items-center justify-content-center col-sm-8">
         {{ form.media }}
-        <form method="POST" enctype="multipart/form-data" action="" id="article-form">
+        <form method="POST" id="newnotice-form" enctype="multipart/form-data" action="" id="article-form">
             {% csrf_token %}
             {{ form.as_p }}
 
@@ -42,8 +42,20 @@
     </div>
 
     <script>
-        document.getElementById("article-form").addEventListener("submit", function(event) {
-            // Optional: Handle form submission dynamically if needed
-        });
+       
+            document.addEventListener("DOMContentLoaded", function() {
+               
+                document.getElementById("newnotice-form").addEventListener("submit", function(event) {
+                    event.preventDefault();
+                    addNotice();
+
+                });
+            });
+            
+            function addNotice(){
+                const form = document.getElementById("newnotice-form");
+                submit(form,'');
+            }
+      
     </script>
 {% endblock %}

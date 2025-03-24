@@ -19,8 +19,7 @@ def dynamicPaths():
         print(f"Database error fetching menu items: {e}")
         traceback.print_exc()
     
-    print("Dynamic URLs added:", url_patterns)
+    #print("Dynamic URLs added:", url_patterns)
     return url_patterns
 
-# Ensure calling the function returns the list of patterns
 dynamic_patterns = lambda: dynamicPaths()
