@@ -16,7 +16,7 @@ class GalleryImageForm(forms.ModelForm):
         model = Image
         fields =['image']
         widgets ={
-            'image':forms.ClearableFileInput(attrs={'class':'form-control','hidden':True})
+            'image':forms.ClearableFileInput(attrs={'class':'form-control'})
         }
 GalleryImageFormset = modelformset_factory(Image,GalleryImageForm,extra=1)
 
