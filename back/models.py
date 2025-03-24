@@ -31,17 +31,32 @@ class ContentType(models.Model):
 class Notices(models.Model):
     noticeTitle = models.CharField(max_length=200)
     noticeBody = CKEditor5Field(config_name='extends')
-    document = models.FileField(upload_to="notices/")
     is_active = models.BooleanField(default=True)
     def __str__(self):
         return self.noticeTitle
+
+
+class NoticeImages(models.Model):
+    notice = models.ForeignKey(Notices,on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='notices/images/',blank=True,null=True)
+    def __str__(self):
+        return self.notice
+    
+class NoticeDocuments(models.Model):
+    notice = models.ForeignKey(Notices,on_delete=models.CASCADE)
+    document =models.FileField(upload_to='notices/documents/', blank=True, null=True)
+    def __str__(self):
+        return self.notice
+    
+
+
+
 
 class Gallery(models.Model):
 
     galleryName = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
     creation_date = models.DateField(default=timezone.now)
-
 
     def __str__(self):
         return self.galleryName
@@ -66,6 +81,8 @@ class Image(models.Model):
     image = models.ImageField(upload_to='gallery_images/')  
     def thumbnail_url(self):
         return get_thumbnail(self.image, '300x200', crop='center', quality=90).url
+    
+
 
 class Article(models.Model):
     title = models.CharField(max_length=200)

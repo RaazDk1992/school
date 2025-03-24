@@ -1,0 +1,64 @@
+{% extends 'meta.html' %}
+
+{% block content %}
+<div class="container col-sm-8">
+    <h2 class="mb-4">Edit Notice</h2>
+    {{ form.media }}
+
+    <form method="POST" enctype="multipart/form-data" id="notice-form">
+        {% csrf_token %}
+        
+        {{ form.as_p }}
+
+        <!-- Attached Documents -->
+        <div id="notice_documents" class="mt-4">
+            <h4 class="mb-3">Attached Documents</h4>
+            {{ notice_document_formset.management_form }}
+            {% for form in notice_document_formset %}
+            {{ form.id.as_hidden }}
+                <div class="form-group row align-items-center mb-3">
+                    <label class="col-sm-2 col-form-label">New File:</label>
+                    <div class="col-sm-6">
+                        {{ form.document }}
+                    </div>
+                    {% if form.instance.document %}
+                        <div class="col-sm-4">
+                            <small>Existing: 
+                                <a href="{{ form.instance.document.url }}" target="_blank" class="text-primary">View File</a>
+                            </small>
+                        </div>
+                    {% endif %}
+                    <div class="col-sm-12 text-right">
+                        {{ form.DELETE }} <label class="text-danger">Delete</label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Attached Images -->
+        <div id="notice_images" class="mt-4">
+            <h4 class="mb-3">Attached Images</h4>
+            {{ notice_image_formset.management_form }}
+            {% for form in notice_image_formset %}
+            {{ form.id.as_hidden }}
+                <div class="form-group row align-items-center mb-3">
+                    <label class="col-sm-2 col-form-label">New Image:</label>
+                    <div class="col-sm-6">
+                        {{ form.image }}
+                    </div>
+                    {% if form.instance.image %}
+                        <div class="col-sm-4">
+                            <img src="{{ form.instance.image.url }}" width="100px" class="img-thumbnail">
+                        </div>
+                    {% endif %}
+                    <div class="col-sm-12 text-right">
+                        {{ form.DELETE }} <label class="text-danger">Delete</label>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <input type="submit" value="Update Notice" class="btn btn-primary mt-3"/>
+    </form>
+</div>
+{% endblock %}

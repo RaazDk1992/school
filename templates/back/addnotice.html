@@ -1,32 +1,49 @@
 {% extends 'meta.html'%}
 
 {% block content %}
-    <div class="container d-flex align-items-center justify-content-center col-sm-8 ">
+    <div class="container d-flex align-items-center justify-content-center col-sm-8">
         {{ form.media }}
         <form method="POST" enctype="multipart/form-data" action="" id="article-form">
             {% csrf_token %}
-
             {{ form.as_p }}
-        
-            <input type="submit" name="submit" value="submit"/>
+
+            <!-- Document File Picker -->
+            <div id="notice_documents" class="mt-3">
+                {{ document_Formset.management_form }}
+
+                {% for form in document_Formset %}
+                    <div class="form-row mb-3">
+                        {{ form.document }}
+                        <label for="files_{{ forloop.counter }}" class="d-block">Select Documents</label>
+                        <input type="file" id="files_{{ forloop.counter }}" name="files_{{ forloop.counter }}" 
+                               multiple class="file-input form-control"
+                               accept=".pdf, .doc, .docx"/>  <!-- Restrict file types -->
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Image File Picker -->
+            <div id="notice_images" class="mt-3">
+                {{ image_formset.management_form }}
+
+                {% for form in image_formset %}
+                    <div class="form-row mb-3">
+                        {{ form.image }}
+                        <label for="images_{{ forloop.counter }}" class="d-block">Select Images</label>
+                        <input type="file" id="images_{{ forloop.counter }}" name="image_{{ forloop.counter }}" 
+                               multiple class="file-input form-control"
+                               accept=".jpg, .jpeg, .png"/>  <!-- Restrict to images -->
+                    </div>
+                {% endfor %}
+            </div>
+
+            <input type="submit" name="submit" value="Submit" class="btn btn-primary mt-3"/>
         </form>
     </div>
 
     <script>
-
         document.getElementById("article-form").addEventListener("submit", function(event) {
-            //event.preventDefault(); // Prevent default form submission
-           // saveArticle();
+            // Optional: Handle form submission dynamically if needed
         });
-    
-        function getCsrfToken() {
-            return document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        }
-
-        function saveArticle() {
-            const form = document.getElementById("article-form");
-            submit(form,'');
-        }
-
     </script>
 {% endblock %}

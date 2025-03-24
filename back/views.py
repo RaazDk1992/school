@@ -3,7 +3,8 @@ from django.http import HttpResponse,JsonResponse
 from django.contrib.auth  import authenticate,login,logout
 from back.forms.menu import MenuForm,SubMenuFormSet
 from back.forms.newArticle import ArticleForm
-from back.forms.newNotice import NoticeForm
+from back.forms.newNotice import NoticeForm,NoticeImageForm,NoticeDocumentForm
+from back.forms.editNotice import NoticeFormEdit,NoticeImageFormEdit,NoticeDocumentFormEdit
 from back.forms.messages import MessageForm
 from back.forms.Dyamic import DynamicForm
 from back.forms.contentTypes import ContentTypeForm
@@ -11,10 +12,11 @@ from back.forms.newgallery import GalleryForm,GalleryImageFormset
 from back.forms.Events import EventsForm
 from back.forms.Testimonial import TestimonialForm
 from back.forms.newslider import SliderForm,SliderFormSet
-from back.models import Image,Gallery, Dynamic,Article,Notices
+from back.models import Image,Gallery, Dynamic,Article,Notices,NoticeDocuments,NoticeImages
 from django.db.models import Prefetch
 from collections import defaultdict
 import os
+from django.forms import modelformset_factory
 
 # Create your views here.
 
@@ -55,34 +57,48 @@ def loadDashboard(request):
             return render(request,"back/dashboard.html",context)
         else:
             return redirect('login')
+        
 def editNotice(request, notice_id):
-    if request.user.is_authenticated:
-        notice = get_object_or_404(Notices, id=notice_id)
-        old_file = notice.document.path if notice.document else None
-        if request.method == "POST":
-            noticeForm = NoticeForm(request.POST, request.FILES, instance=notice)
-            if noticeForm.is_valid():
-                
-                if "document" in request.FILES: 
-                    print(f"Old file :{old_file}")
-                    if old_file and os.path.exists(old_file):
-                        
-                        os.remove(old_file)
-                    else:
-                        print("file not found")
-                noticeForm.save()
-                return redirect("dashboard")  # Redirect to the list or details page after updating
-        
-        else:  # Handles GET request
-            noticeForm = NoticeForm(instance=notice)
-        
-        return render(request, "back/addnotice.html", {"form": noticeForm})
+    if not request.user.is_authenticated:
+        return redirect('login')
 
-    return redirect("login")  # Redirect unauthorized users
+    notice = get_object_or_404(Notices, id=notice_id)
+    notice_documents = NoticeDocuments.objects.filter(notice=notice)
+    notice_images = NoticeImages.objects.filter(notice=notice)
+
+    extra_forms = 1 if not notice_documents.exists() and not notice_images.exists() else 0
+
+    NoticeImageFormSet = modelformset_factory(NoticeImages, form=NoticeImageFormEdit, extra=extra_forms, can_delete=True)
+    NoticeDocumentFormSet = modelformset_factory(NoticeDocuments, form=NoticeDocumentFormEdit, extra=extra_forms, can_delete=True)
+
+    if request.method == "POST":
+        form = NoticeFormEdit(request.POST, request.FILES, instance=notice)
+        notice_documentx_formset = NoticeDocumentFormSet(request.POST, request.FILES, queryset=notice_documents, prefix="documents")
+        notice_images_formset = NoticeImageFormSet(request.POST, request.FILES, queryset=notice_images, prefix="images")
+
+        if form.is_valid() and notice_documentx_formset.is_valid() and notice_images_formset.is_valid():
+            form.save()
+            notice_documentx_formset.save()
+            notice_images_formset.save()
+            return redirect('notice_list') 
+        else:
+            print("invalid")
+    else:
+        form = NoticeFormEdit(instance=notice)
+        notice_document_formset = NoticeDocumentFormSet(queryset=notice_documents, prefix="documents")
+        notice_image_formset = NoticeImageFormSet(queryset=notice_images, prefix="images")
+
+    return render(request, 'back/editnotice.html', {
+        'form': form,
+        'notice_document_formset': notice_document_formset,
+        'notice_image_formset': notice_image_formset,
+    })
+
 
 def edit_gallery(request, gallery_id):
     gallery = get_object_or_404(Gallery, id=gallery_id)
     images = Image.objects.filter(gallery=gallery)
+
     if request.method == "POST":
         gallery_form = GalleryForm(request.POST, instance=gallery)
         formset = GalleryImageFormset(request.POST, request.FILES, queryset=images)
@@ -93,9 +109,10 @@ def edit_gallery(request, gallery_id):
     else:
         gallery_form = GalleryForm(instance=gallery)
         formset = GalleryImageFormset(queryset=images)
-        return render(request, 'back/editgalary.html', {
-        'gallery_form': gallery_form,
-        'gallery_image_formset': formset
+
+    return render(request, "back/editgalary.html", {
+        "gallery_form": gallery_form,
+        "gallery_image_formset": formset,
     })
 
 def addEvents(request):
@@ -172,7 +189,7 @@ def addGallery(request):
                     )
                     gallery_image.save()  # Save the gallery image instance
 
-            return redirect('gallery_list')  # Redirect after successful save
+            return redirect('gallery_list')  
 
     else:
        
@@ -257,19 +274,69 @@ def addArticle(request):
     
 def addNotice(request):
     if request.user.is_authenticated:
+        NoticeImageFormSet = modelformset_factory(
+                                    NoticeImages, form=NoticeImageForm, extra=1, can_delete=True
+                                     )
+        NoticeDocumentFormSet = modelformset_factory(
+                                    NoticeDocuments, form=NoticeDocumentForm, extra=1, can_delete=True
+                                    )
+
         if request.method =="POST":
             form = NoticeForm(request.POST,request.FILES)
-            if form.is_valid():
-                notice = form.save()
+            notice_image_formset = NoticeImageFormSet(request.POST or None, request.FILES or None)
+            notice_document_formset = NoticeDocumentFormSet(request.POST or None,request.FILES or None)
+            if form.is_valid() and notice_image_formset.is_valid() and notice_document_formset.is_valid():
+                ##Save the form
+                notice_instance = form.save()
+                images_instances = notice_image_formset.save(commit=False)
+                document_instances = notice_document_formset.save(commit=False)
+
+                ## As actual formset is not used, make a placeholder
+                if not images_instances:
+                    images_instances = [NoticeImages()]
+
+                if not document_instances:
+                    document_instances = [NoticeDocuments()]
+
+                for idx, image in enumerate(images_instances):
+                    image_files = request.FILES.getlist(f'image_{idx+1}')  
+                    for image_file in image_files:
+                        # Create a new image object for each uploaded file
+                        notice_image = NoticeImages.objects.create(
+                            image=image_file,
+                            notice=notice_instance
+                        )
+                        notice_image.save()  
+                    for idx, documents in enumerate(document_instances):
+                        docs = request.FILES.getlist(f'files_{idx+1}')
+                        for doc in docs:
+                            notice_docs = NoticeDocuments.objects.create(
+                                notice = notice_instance,
+                                document = doc
+                            )
+                            notice_docs.save()
+
                 
-                return JsonResponse({"message":f"Notice {notice.noticeTitle} published!!"},status=200)
+
             else:
+               all_errors ={}
+               all_errors["form errors"] = form.errors.as_json
+               all_errors["notice_image_errors"] = [
+                   form.errors.as_json() for form in notice_image_formset.forms if form.errors
+               ]
+               all_errors["notice_documents_errors"] =[
+                   form.errors.as_json() for form in notice_document_formset.forms if form.errors
+               ]
                
-                return JsonResponse({"message": "Error", "errors": form.errors}, status=400)
 
         if request.method =="GET":
             noticeForm =  NoticeForm()
-            return render(request,'back/addnotice.html',{'form':noticeForm})
+            notice_image_formset = NoticeImageFormSet(queryset=NoticeImages.objects.none())
+            notice_document_formset = NoticeDocumentFormSet(queryset=NoticeDocuments.objects.none())
+            return render(request,'back/addnotice.html',{
+                'form':noticeForm,
+                'image_formset':notice_image_formset,
+                'document_Formset':notice_document_formset})
     else:
         return render(request,"back/addarticle.html")
     
