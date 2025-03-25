@@ -1,15 +1,10 @@
-"""
-WSGI config for schoolproject project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
-"""
-
+import sys
 import os
-
 from django.core.wsgi import get_wsgi_application
+
+# Set UTF-8 encoding for output
+sys.stdout.reconfigure(encoding="utf-8")
+sys.stdin.reconfigure(encoding="utf-8")
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'schoolproject.settings')
 
