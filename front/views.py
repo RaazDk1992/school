@@ -8,6 +8,7 @@ def index(request):
     messages = Message.objects.filter(is_active = True)
     events = Events.objects.all()
     notices = Notices.objects.all()
+    print(notices)
     context = {
         'sliders': sliders,
         'messages': messages,

@@ -29,11 +29,11 @@ class ContentType(models.Model):
     
 
 class Notices(models.Model):
-    noticeTitle = models.CharField(max_length=200)
-    noticeBody = CKEditor5Field(config_name='extends')
+    title = models.CharField(max_length=200)
+    body = CKEditor5Field(config_name='extends')
     is_active = models.BooleanField(default=True)
     def __str__(self):
-        return self.noticeTitle
+        return self.title
 
 
 class NoticeImages(models.Model):
@@ -127,7 +127,7 @@ class Dynamic(models.Model):
     title = models.CharField(max_length=100)
     body =  CKEditor5Field(config_name='extends')
     image = models.ImageField(upload_to="dynamic/images/", null=True,blank=True)
-    files = models.FileField(upload_to='dynamic/files/',null=True,blank=True)
+    document = models.FileField(upload_to='dynamic/files/',null=True,blank=True)
     path = models.SlugField(unique=True, blank=True)
     def save(self, *args, **kwargs):
         if not self.path:
