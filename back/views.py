@@ -218,7 +218,9 @@ def createContent(request):
             form = DynamicForm(request.POST,request.FILES)
             if form.is_valid():
                 form.save()
-            return null
+                return JsonResponse({'status':'success','message':'Item added'},status=200)
+            else:
+                return JsonResponse({'status':'fail','message':f'Could not be created{form.errors}'},status=400)
         else :
             dyn = DynamicForm()
             return render(request,'back/dynamic.html',{'form':dyn})

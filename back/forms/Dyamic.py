@@ -8,7 +8,7 @@ class DynamicForm(forms.ModelForm):
         model = Dynamic
         fields = '__all__'
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter menu item name'}),
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Content Title'}),
             'body':CKEditor5Widget(
                   attrs={"class": "django_ckeditor_5"}, config_name="extends"),
             'image': forms.ClearableFileInput(attrs={'id': 'file'}) ,
