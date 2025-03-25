@@ -14,8 +14,8 @@
     <ul class="list-group" id="noticeList">
         {% for item in list %}
         <li class="list-group-item d-flex justify-content-between align-items-center notice-item">
-            <span class="fw-bold">📌 {{ item.noticeTitle }}</span>
-            <a href="{{ item.document.url }}" class="btn btn-link text-primary" target="_blank">📂 Download</a>
+           <a href="/{{base}}/{{item.id}}"> <span class="fw-bold"> {{ item.title }}</span></a>
+            <a>view</a>
         </li>
         {% endfor %}
     </ul>

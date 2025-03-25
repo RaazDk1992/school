@@ -18,12 +18,21 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <h1>{{ content.title }}</h1>
+    <p>{{ content.body | safe }}</p>
+    
+    <!-- Render the image -->
+    {% if content.image %}
+        <img src="{{ content.image.url }}" alt="{{ content.title }}" class="img-fluid">
+    {% endif %}
 
-    <div class="container">
-        {{content.title}}
-        {{content.body |safe}}
-        {{content.image}}
-        {{content.files}}
-    <div>
-
+    <!-- Render the file/document -->
+    {% if content.files %}
+        <a href="{{ content.files.url }}" target="_blank" class="btn btn-primary">
+            View Document
+        </a>
+    {% endif %}
+</div>
 {% endblock %}
+

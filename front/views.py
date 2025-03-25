@@ -8,7 +8,6 @@ def index(request):
     messages = Message.objects.filter(is_active = True)
     events = Events.objects.all()
     notices = Notices.objects.all()
-    print(notices)
     context = {
         'sliders': sliders,
         'messages': messages,
@@ -16,14 +15,20 @@ def index(request):
         'notices':notices
     }
     return render(request,"front\\index.html",context)
+
 def loadNotices(request):
     notices = Notices.objects.all()
     context={
         'viewName':'Notices',
-        'list':notices
+        'list':notices,
+        'base':'noticedetails'
     }
     return render(request,"front\\listview.html",context)
 
+
+def noticeDetails(request,noticeId):
+    notice = get_object_or_404(Notices.objects.prefetch_related('noticeimages_set', 'noticedocuments_set'), id=noticeId)
+    return render(request,'front/detailed1.html',{'content':notice})
 
 def dynamicView(request):
 
@@ -34,7 +39,7 @@ def dynamicView(request):
         menu = Menu.objects.get(menuItem=path)
         contentTypeRef = get_object_or_404(ContentType, id=menu.contentType_id)
         contents = Dynamic.objects.filter(contentType=contentTypeRef)
-        return render(request,'front/dynamic.html',{'list':contents})
+        return render(request,'front/listview.html',{'list':contents,'viewName':menu,'base':'detail'})
     except Menu.DoesNotExist:
         raise Http404("Menu item does not exist")
    
