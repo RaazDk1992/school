@@ -331,7 +331,7 @@ def addNotice(request):
                                 document = doc
                             )
                             notice_docs.save()
-                return JsonResponse({"status":"Success","message":f"Notice :{notice_instance.noticeTitle} Saved!!"},status=200)
+                return JsonResponse({"status":"Success","message":f"Notice :{notice_instance.title} Saved!!"},status=200)
             else:
                 
                     all_errors ={}

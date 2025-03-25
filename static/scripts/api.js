@@ -2,7 +2,7 @@ function getCssVariable(variableName) {
     return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
 }
 
-function submit(form, path, contentType) {
+function submit(form, path, redirect) {
     const formData = new FormData(form);
     const encType = form.enctype;
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
@@ -26,7 +26,10 @@ function submit(form, path, contentType) {
         });
 
         setTimeout(() => {
-            window.location.href = "/back/dashboard"; // Redirect after success
+            form.reset();
+            if (redirect) {
+                window.location.href = redirect; // Redirect after success
+            }
         }, 2000);
     })
     .catch(error => {
