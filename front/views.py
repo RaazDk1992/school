@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render,get_object_or_404
 from back.models import Sliders,Message,Notices,Gallery,Image,Events,Menu,ContentType,Dynamic
 from django.db.models import Prefetch
@@ -28,11 +28,15 @@ def dynamicView(request):
 
     #strip slashesh to get actual menu items.
     path = request.path.strip('/').split('/')[-1]
-    #get contentType from menu,  we are getting menu object with menu itemname = path, then getting its conttenttpe ref from there.
-    contentTypeRef =get_object_or_404(ContentType, id=Menu.objects.get(menuItem=path).contentType_id)
-    #get the list of items of that particular type.
-    contents = Dynamic.objects.filter(contentType=contentTypeRef)
-    return render(request,'front/dynamic.html',{'list':contents})
+   
+    try:
+        menu = Menu.objects.get(menuItem=path)
+        contentTypeRef = get_object_or_404(ContentType, id=menu.contentType_id)
+        contents = Dynamic.objects.filter(contentType=contentTypeRef)
+        return render(request,'front/dynamic.html',{'list':contents})
+    except Menu.DoesNotExist:
+        raise Http404("Menu item does not exist")
+   
 
 
 def loadDynamicContent(request, contentId):
@@ -46,5 +50,9 @@ def showGalleries(request):
     ).order_by('-creation_date')
     
     return render(request, 'front/timeline.html',{'galleries':galleries})
+
+
+def show404(request):
+    return render(request,'404.html')
 
 
