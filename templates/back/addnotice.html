@@ -47,15 +47,11 @@
                
                 document.getElementById("newnotice-form").addEventListener("submit", function(event) {
                     event.preventDefault();
-                    addNotice();
+                    submit(this,'');
 
                 });
             });
             
-            function addNotice(){
-                const form = document.getElementById("newnotice-form");
-                submit(form,'');
-            }
       
     </script>
 {% endblock %}

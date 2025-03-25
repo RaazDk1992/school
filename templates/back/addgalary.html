@@ -6,7 +6,7 @@
 
 <div class="container mt-4">
     <h2>Add Gallery</h2>
-    <form method="POST" class="col-sm-8" enctype="multipart/form-data">
+    <form method="POST" class="col-sm-8" id="gallery_form" enctype="multipart/form-data">
         {% csrf_token %}
     
         <!-- Gallery Form -->
@@ -37,6 +37,21 @@
 </div>
 
 <script src="{% static 'scripts/filepicker.js'%}"></script>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function(){
+
+      document.getElementById("gallery_form").addEventListener("submit", function(event){
+
+        event.preventDefault();
+        submit(this,'');
+
+      });
+
+    });
+
+</script>
 
 
 {% endblock %}

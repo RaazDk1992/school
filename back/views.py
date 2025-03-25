@@ -165,11 +165,10 @@ def addMenu(request):
             for submenu in submenu_instances:
                 submenu.menuRef = menu
                 submenu.save()
-            return redirect("success_url")  
+            return JsonResponse({'status':'success','message':'Menu item added successfully!!'},status=200)
         else:
             
-            print("Menu Form Errors:", menu_form.errors)
-            print("Submenu Formset Errors:", submenu_formset.errors)
+            return JsonResponse({'status':'error','message':f'Could not create menu{menu_form.errors}'},status=400)
 
 
     return render(request, 'back/addmenu.html', {'form': menu_form, 'submenu_formset': submenu_formset})
@@ -198,7 +197,9 @@ def addGallery(request):
                     )
                     gallery_image.save()  # Save the gallery image instance
 
-            return redirect('gallery_list')  
+            return JsonResponse({'status':'success','message':f'Gallery {gallery_instance.galleryName} created!!'}, status=200)
+        else:
+            return JsonResponse({'status':'fail','message':'Could not create gallery!!'}, status=400)
 
     else:
        
@@ -359,6 +360,9 @@ def addMessage(request):
             form = MessageForm(request.POST,request.FILES)
             if form.is_valid():
                 messagef = form.save()
+                return JsonResponse({'status':'success','message':'Message added successfully!!'},status=200)
+            else:
+                return JsonResponse({'status':'fail','message':'Could not publish  message','error':form.errors},status=400)
         else:
             form = MessageForm()
             return render(request,"back/addMessage.html", {"form":form})

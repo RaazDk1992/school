@@ -107,7 +107,22 @@
             inputGroup.appendChild(deleteButton);
             subMenuField.appendChild(inputGroup);
         }
+
+
+
+
+
+     /** save form 
+    **/
+
+    document.getElementById("menuForm").addEventListener("submit",function(event){
+
+        event.preventDefault();
+        submit(this,'');
+    })
+
     });
+
 </script>
 
 {% endblock %}
