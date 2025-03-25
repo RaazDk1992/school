@@ -1,6 +1,6 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-from back.models import Sliders,Message,Notices,Gallery,Image,Events
+from django.shortcuts import render,get_object_or_404
+from back.models import Sliders,Message,Notices,Gallery,Image,Events,Menu,ContentType,Dynamic
 from django.db.models import Prefetch
 
 def index(request):
@@ -26,9 +26,18 @@ def loadNotices(request):
 
 def dynamicView(request):
 
-    path = request.path.rstrip('/').split('/')[-1] 
-    print(request.path)
-    return render(request,'back/login.html')
+    #strip slashesh to get actual menu items.
+    path = request.path.strip('/').split('/')[-1]
+    #get contentType from menu,  we are getting menu object with menu itemname = path, then getting its conttenttpe ref from there.
+    contentTypeRef =get_object_or_404(ContentType, id=Menu.objects.get(menuItem=path).contentType_id)
+    #get the list of items of that particular type.
+    contents = Dynamic.objects.filter(contentType=contentTypeRef)
+    return render(request,'front/dynamic.html',{'list':contents})
+
+
+def loadDynamicContent(request, contentId):
+    content = Dynamic.objects.get(id=contentId)
+    return render(request,'front/detailed.html',{'content':content})
 
 def showGalleries(request):
    

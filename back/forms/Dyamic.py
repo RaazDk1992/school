@@ -11,7 +11,7 @@ class DynamicForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Content Title'}),
             'body':CKEditor5Widget(
                   attrs={"class": "django_ckeditor_5"}, config_name="extends"),
-            'image': forms.ClearableFileInput(attrs={'id': 'file'}) ,
-            'files':forms.ClearableFileInput(attrs={'id': 'file'}) ,
+            'image': forms.ClearableFileInput(attrs={'id': 'file','required':False}) ,
+            'files':forms.ClearableFileInput(attrs={'id': 'file','required':False}) ,
             
         }

@@ -1,0 +1,50 @@
+{% extends 'meta.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<section class="container w-100 d-flex flex-column justify-content-center">
+    <h2 class="text-center my-4">{{ viewName }}</h2>
+
+    {% if list %}
+    <!-- Search Box -->
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder=" Search ...">
+
+    <ul class="list-group" id="noticeList">
+        {% for item in list %}
+        <li class="list-group-item d-flex justify-content-between align-items-center notice-item">
+            <a href="/detail/{{ item.id }}">
+                <span class="fw-bold">{{ item.title }}</span>
+            </a>            
+        </li>
+        {% endfor %}
+    </ul>
+    
+    {% else %}
+        <div class="alert alert-warning text-center w-50 mx-auto" role="alert">
+            Nothing here..
+        </div>
+    {% endif %}
+</section>
+
+<script>
+    // Search Functionality
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("searchInput").addEventListener("input", function() {
+            let searchValue = this.value.toLowerCase();
+            let notices = document.querySelectorAll(".notice-item");
+
+            notices.forEach(notice => {
+                let title = notice.querySelector("span").textContent.toLowerCase();
+                if (title.includes(searchValue)) {
+                    notice.style.display = "flex";
+                } else {
+                    notice.style.display = "none";
+                }
+            });
+        });
+    });
+</script>
+
+{% endblock %}

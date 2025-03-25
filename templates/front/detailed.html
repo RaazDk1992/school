@@ -1,0 +1,29 @@
+{% extends 'meta.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<style>
+
+    .container img {
+        max-height: 300px !important; 
+        margin:5px !important;
+        width: auto; 
+        height: auto; 
+        object-fit: contain;
+        margin: auto; 
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        {{content.title}}
+        {{content.body |safe}}
+        {{content.image}}
+        {{content.files}}
+    <div>
+
+{% endblock %}
