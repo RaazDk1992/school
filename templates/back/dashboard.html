@@ -106,9 +106,14 @@
                             <a href="{% url 'edit_notice' notice.id %}" class="btn btn-sm btn-warning">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
-                            <button class="btn btn-sm btn-danger" onclick="deleteNotice({{ notice.id }})">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
+                            <!-- Delete section-->
+                            <form action="/back/delete-notice/{{notice.id}}" style="display:inline;" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </form>
+                            <!-- End of delete-->
                         </div>
                     </li>
                     {% endfor %}
@@ -132,9 +137,16 @@
                         <a href="{% url 'edit_gallery' gallery.id %}" class="btn btn-sm btn-warning">
                             <i class="fa fa-edit"></i> Edit
                         </a>
-                        <button class="btn btn-sm btn-danger" onclick="deleteNotice({{ gallery.id }})">
-                            <i class="fa fa-trash"></i> Delete
-                        </button>
+                        <!-- Delete Section-->
+
+                        <form action="/back/delete-gallery/{{gallery.id}}" style="display:inline;" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </form>
+
+                        <!-- end of delete-->
                     </div>
                 </li>
                 {% endfor %}
@@ -158,8 +170,9 @@
                                 <a href="{% url 'edit_dynamic' dynamic.id %}" class="btn btn-sm btn-warning">
                                     <i class="fa fa-edit"></i> Edit
                                 </a>
-                                <form action="/back/delete-dynamic/{{dynamic.id}}" style="display:inline;">
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="deleteNotice({{ gallery.id }})">
+                                <form action="/back/delete-dynamic/{{dynamic.id}}" style="display:inline;" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">
                                         <i class="fa fa-trash"></i> Delete
                                     </button>
                                 </form>
@@ -200,7 +213,7 @@
                     event.preventDefault(); 
                 } else{
                     event.preventDefault();
-                    submit(this,'','/back/dashboard');
+                    submit(this,this.getAttribute("action"),'/back/dashboard');
                 }
             });
         });

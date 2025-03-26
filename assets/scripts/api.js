@@ -2,7 +2,7 @@ function getCssVariable(variableName) {
     return getComputedStyle(document.documentElement).getPropertyValue(variableName).trim();
 }
 
-function submit(form, path, contentType) {
+function submit(form, path, redirect) {
     const formData = new FormData(form);
     const encType = form.enctype;
     const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
@@ -26,17 +26,29 @@ function submit(form, path, contentType) {
         });
 
         setTimeout(() => {
-            window.location.href = "/back/dashboard"; // Redirect after success
+            form.reset();
+            if (redirect) {
+                window.location.href = redirect; // Redirect after success
+            }
         }, 2000);
     })
     .catch(error => {
         console.log(error);
         iziToast.error({
             title: 'Error',
-            message: error.response?.data?.message || 'failed. Please try again!',
+            message: error.response?.data?.message || 'Failed. Please try again!',
             position: 'bottomCenter',
-            backgroundColor: '#900C3F',
-            timeout: 4000
+            backgroundColor: '#FF4C4C',  // Custom red background
+            titleColor: '#FFF',          // White title text
+            messageColor: '#FFF',        // White message text
+            iconColor: '#FFF',           // White icon color
+            timeout: 4000,
+            progressBarColor: '#FFA07A', // Custom progress bar color
+            closeOnEscape: true,
+            close: true,                 // Show close button
+            transitionIn: 'fadeInDown',  
+            transitionOut: 'fadeOutUp',
+            theme: 'dark'
         });
     });
 }

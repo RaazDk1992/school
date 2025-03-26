@@ -36,10 +36,19 @@ function submit(form, path, redirect) {
         console.log(error);
         iziToast.error({
             title: 'Error',
-            message: error.response?.data?.message || 'failed. Please try again!',
+            message: error.response?.data?.message || 'Failed. Please try again!',
             position: 'bottomCenter',
-            backgroundColor: '#900C3F',
-            timeout: 4000
+            backgroundColor: '#FF4C4C',  // Custom red background
+            titleColor: '#FFF',          // White title text
+            messageColor: '#FFF',        // White message text
+            iconColor: '#FFF',           // White icon color
+            timeout: 4000,
+            progressBarColor: '#FFA07A', // Custom progress bar color
+            closeOnEscape: true,
+            close: true,                 // Show close button
+            transitionIn: 'fadeInDown',  
+            transitionOut: 'fadeOutUp',
+            theme: 'dark'
         });
     });
 }

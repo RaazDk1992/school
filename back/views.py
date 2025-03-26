@@ -13,7 +13,7 @@ from back.forms.editGallery import EditGalleryForm,EditGalleryImageFormset
 from back.forms.Events import EventsForm
 from back.forms.Testimonial import TestimonialForm
 from back.forms.newslider import SliderForm,SliderFormSet
-from back.models import Image,Gallery, Dynamic,Article,Notices,NoticeDocuments,NoticeImages,ContentType
+from back.models import Image,Gallery, Dynamic,Article,Notices,NoticeDocuments,NoticeImages,ContentType,Events
 from django.db.models import Prefetch
 from collections import defaultdict
 import os
@@ -87,51 +87,100 @@ def editDynamic(request, id):
 def deleteDynamic(request,id):
     if request.user.is_authenticated:
         dynamicObject = get_object_or_404(Dynamic,id=id)
-        if dynamicObject.owner != request.user:
-            print("Not same guy!!")
-        else:
-            print("Same guy!!")
-    else:
-        pass
-
-    
         
+        if dynamicObject.owner != request.user:
+            return JsonResponse({'status':'fail','message':'You are not authorized to delete this'},status=401)
+        else:
+            dynamicObject.delete()
+            return JsonResponse({'status':'success', 'message':'Deletion Successful!!'},status=200)
+    else:
+        return redirect('login')
+
+def deleteNotice(request,id):
+    if request.user.is_authenticated:
+        notice = get_object_or_404(Notices,id=id)
+
+        if notice.owner != request.user:
+            return JsonResponse({'status':'fail','message':'You are not authorized'},status=401)
+        else:
+            notice.delete()
+            return JsonResponse({'status':'success','message':'Notice deleted'},status=200)
+
+def deleteEvent(request,id):
+    if request.user.is_authenticated:
+        event = get_object_or_404(Events,id=id)
+        if event.owner != request.user:
+            return JsonResponse({'status':'fail','message':'You are not authorized to delete this'},status=200)
+        else:
+            event.delete()
+            return JsonResponse({'status':'success','message':'Delete successfully!!'},status=200)
+
+def deleteGallery(request,id):
+    if request.user.is_authenticated:
+        gallery = get_object_or_404(Gallery,id=id)
+        if gallery.owner != request.user:
+            return JsonResponse({'status':'fail','message':'You are not authorized to delete this'},status=401)
+        else:
+            gallery.delete()
+            return JsonResponse({'status':'success','message':'Delete successfully!!'},status=200)
+    
+    
 def editNotice(request, notice_id):
     if not request.user.is_authenticated:
         return redirect('login')
 
+    # Fetch existing notice and related objects
     notice = get_object_or_404(Notices, id=notice_id)
     notice_documents = NoticeDocuments.objects.filter(notice=notice)
     notice_images = NoticeImages.objects.filter(notice=notice)
 
+    # Determine the extra forms count
     extra_forms = 1 if not notice_documents.exists() and not notice_images.exists() else 0
 
+    # Define formsets
     NoticeImageFormSet = modelformset_factory(NoticeImages, form=NoticeImageFormEdit, extra=extra_forms, can_delete=True)
     NoticeDocumentFormSet = modelformset_factory(NoticeDocuments, form=NoticeDocumentFormEdit, extra=extra_forms, can_delete=True)
 
     if request.method == "POST":
         form = NoticeFormEdit(request.POST, request.FILES, instance=notice)
-        notice_documentx_formset = NoticeDocumentFormSet(request.POST, request.FILES, queryset=notice_documents, prefix="documents")
-        notice_images_formset = NoticeImageFormSet(request.POST, request.FILES, queryset=notice_images, prefix="images")
+        notice_document_formset = NoticeDocumentFormSet(request.POST, request.FILES, queryset=notice_documents, prefix="documents")
+        notice_image_formset = NoticeImageFormSet(request.POST, request.FILES, queryset=notice_images, prefix="images")
 
-        if form.is_valid() and notice_documentx_formset.is_valid() and notice_images_formset.is_valid():
-            form.save()
-            notice_documentx_formset.save()
-            notice_images_formset.save()
-            return JsonResponse({'status':'success','message':'notice updated !!'},status=200)
+        # Debugging: Check if formsets are receiving data
+        print(f"POST Data: {request.POST}")  # Logs POST data
+        print(f"Files: {request.FILES}")  # Logs uploaded files
+
+        if form.is_valid() and notice_document_formset.is_valid() and notice_image_formset.is_valid():
+            notice = form.save()  # Save the notice first
+
+            # Assign notice to each document before saving
+            for doc_form in notice_document_formset:
+                if doc_form.instance.pk is None:  # Only for new instances
+                    doc_form.instance.notice = notice
+                    doc_form.instance.owner = request.user
+
+            # Assign notice to each image before saving
+            for img_form in notice_image_formset:
+                if img_form.instance.pk is None:  # Only for new instances
+                    img_form.instance.notice = notice
+                    img_form.instance.owner=request.user
+
+            notice_document_formset.save()
+            notice_image_formset.save()
+
+            return JsonResponse({'status': 'success', 'message': 'Notice updated successfully!'}, status=200)
         else:
-            errors =[]
+            errors = []
             if form.errors:
-                errors.extend([f"{field}:{error}" for field,error_list in form.errors.items() for error in error_list])
-            if notice_documentx_formset.errors:
-                for idx, form_errors in enumerate(notice_documentx_formset.errors):
-                    errors.extend([f"Document {idx+1}-{field}:{error}" for field,error_list in form_errors.items() for error in error_list])
-
+                errors.extend([f"{field}: {error}" for field, error_list in form.errors.items() for error in error_list])
+            if notice_document_formset.errors:
+                for idx, form_errors in enumerate(notice_document_formset.errors):
+                    errors.extend([f"Document {idx+1} - {field}: {error}" for field, error_list in form_errors.items() for error in error_list])
             if notice_image_formset.errors:
-                for idx,form_errors in enumerate(notice_image_formset.errors):
-                    errors.extend([f" Image {idx+1}-{field}:{error}" for field, error_list in form_errors.items() for error in error_list])
+                for idx, form_errors in enumerate(notice_image_formset.errors):
+                    errors.extend([f"Image {idx+1} - {field}: {error}" for field, error_list in form_errors.items() for error in error_list])
 
-            return JsonResponse({'status':'fail','message':'data could not be saved','errors':errors})
+            return JsonResponse({'status': 'fail', 'message': 'Data could not be saved', 'errors': errors}, status=400)
 
     else:
         form = NoticeFormEdit(instance=notice)
@@ -143,8 +192,6 @@ def editNotice(request, notice_id):
         'notice_document_formset': notice_document_formset,
         'notice_image_formset': notice_image_formset,
     })
-
-
 def edit_gallery(request, gallery_id):
     gallery = get_object_or_404(Gallery, id=gallery_id)
     images = Image.objects.filter(gallery=gallery)
