@@ -5,7 +5,7 @@
     <h2 class="mb-4">Edit Notice</h2>
     {{ form.media }}
 
-    <form method="POST" enctype="multipart/form-data" id="notice-form">
+    <form method="POST" enctype="multipart/form-data" id="edit-notice-form">
         {% csrf_token %}
         
         {{ form.as_p }}
@@ -61,4 +61,15 @@
         <input type="submit" value="Update Notice" class="btn btn-primary mt-3"/>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded",function(){
+
+        form = document.getElementById("edit-notice-form");
+        form.addEventListener("submit",function(event){
+            event.preventDefault();
+            submit(this,'',"/back/dashboard");
+        });
+    });
+</script>
 {% endblock %}

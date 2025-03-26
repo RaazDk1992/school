@@ -5,6 +5,7 @@ class TestimonialForm(forms.ModelForm):
     class Meta:
         model = Testimonials
         fields ='__all__'
+        exclude = ['owner']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'name ','id':'date_picker'}),
             'body': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'message here..','id':'date_en'}),

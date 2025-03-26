@@ -19,6 +19,7 @@ class MenuForm(forms.ModelForm):
     class Meta:
         model = Menu
         fields = '__all__'
+        exclude = ['owner']
         widgets = {
             'menuItem': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter menu item name'}),
             'menuPath': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter menu path'}),

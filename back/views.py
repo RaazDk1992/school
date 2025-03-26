@@ -13,7 +13,7 @@ from back.forms.editGallery import EditGalleryForm,EditGalleryImageFormset
 from back.forms.Events import EventsForm
 from back.forms.Testimonial import TestimonialForm
 from back.forms.newslider import SliderForm,SliderFormSet
-from back.models import Image,Gallery, Dynamic,Article,Notices,NoticeDocuments,NoticeImages
+from back.models import Image,Gallery, Dynamic,Article,Notices,NoticeDocuments,NoticeImages,ContentType
 from django.db.models import Prefetch
 from collections import defaultdict
 import os
@@ -49,15 +49,52 @@ def loadDashboard(request):
             article_list = Article.objects.all()
             notice_list = Notices.objects.all()
             gallery_list = Gallery.objects.all()
-          
+
+            ## get dynamically added elements
+           
+            dynamic_query_set = Dynamic.objects.all()
+            contentTypes = ContentType.objects.prefetch_related(Prefetch('dynamic_set',queryset=dynamic_query_set)).all()
+           
             context ={
                 'article_list':article_list,
                 'notice_list': notice_list,
-                'gallery_list':gallery_list
+                'gallery_list':gallery_list,
+                'content_types':contentTypes
             }
             return render(request,"back/dashboard.html",context)
         else:
             return redirect('login')
+        
+
+def editDynamic(request, id):
+   
+   if request.user.is_authenticated:
+       dynamicObject = get_object_or_404(Dynamic,id=id)
+
+       if request.method =="POST":
+            dynamicForm = DynamicForm(request.POST,request.FILES,instance=dynamicObject)
+            if dynamicForm.is_valid():
+                dynamicForm.save()
+                return JsonResponse({'status':'Success','message':'Update successful!!'},status=200)
+            else:
+                return JsonResponse({'status':'fail','message':'Could not be updated','error':dynamicForm.errors},status=400)
+       else:
+           form  = DynamicForm(instance=dynamicObject)
+           return render(request,"back/dynamic.html",{"form":form})
+   else:
+       return redirect('login')
+       
+def deleteDynamic(request,id):
+    if request.user.is_authenticated:
+        dynamicObject = get_object_or_404(Dynamic,id=id)
+        if dynamicObject.owner != request.user:
+            print("Not same guy!!")
+        else:
+            print("Same guy!!")
+    else:
+        pass
+
+    
         
 def editNotice(request, notice_id):
     if not request.user.is_authenticated:
@@ -81,9 +118,21 @@ def editNotice(request, notice_id):
             form.save()
             notice_documentx_formset.save()
             notice_images_formset.save()
-            return redirect('notice_list') 
+            return JsonResponse({'status':'success','message':'notice updated !!'},status=200)
         else:
-            print("invalid")
+            errors =[]
+            if form.errors:
+                errors.extend([f"{field}:{error}" for field,error_list in form.errors.items() for error in error_list])
+            if notice_documentx_formset.errors:
+                for idx, form_errors in enumerate(notice_documentx_formset.errors):
+                    errors.extend([f"Document {idx+1}-{field}:{error}" for field,error_list in form_errors.items() for error in error_list])
+
+            if notice_image_formset.errors:
+                for idx,form_errors in enumerate(notice_image_formset.errors):
+                    errors.extend([f" Image {idx+1}-{field}:{error}" for field, error_list in form_errors.items() for error in error_list])
+
+            return JsonResponse({'status':'fail','message':'data could not be saved','errors':errors})
+
     else:
         form = NoticeFormEdit(instance=notice)
         notice_document_formset = NoticeDocumentFormSet(queryset=notice_documents, prefix="documents")
@@ -131,7 +180,10 @@ def addEvents(request):
     if request.method == "POST":
        eventForm = EventsForm(request.POST)
        if eventForm.is_valid():
-           eventForm.save()
+           obj = eventForm.save(commit=False)
+           obj.owner = request.user
+           obj.save()
+
     else:
         eventForm = EventsForm()
     return render(request, 'back/addevents.html', {'form': eventForm})
@@ -233,6 +285,9 @@ def addContentType(request):
             frm = ContentTypeForm(request.POST or None)
             if frm.is_valid():
                 frm.save()
+                return JsonResponse({'status':'success','message':'contentType added!!'},status=200)
+            else:
+                return JsonResponse({'status':'failed','message':'failed to add contentType','error':frm.errors})
         else:
             form = ContentTypeForm()
             return render(request,'back/contentType.html',{'form':form})

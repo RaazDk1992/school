@@ -71,6 +71,14 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#gallery">Gallery</a>
         </li>
+
+        {% for content_type in content_types %}
+            <li class="nav-item" >
+                <a class="nav-link" id="tab-{{ content_type.id }}" data-bs-toggle="tab" href="#content-{{ content_type.id }}" role="tab" >
+                    {{ content_type.contentType }}
+                </a>
+            </li>
+        {% endfor %}
     </ul>
 
     <div class="tab-content border p-3">
@@ -135,6 +143,37 @@
             <p class="text-muted">No notices published yet.</p>
         {% endif %}
         </div>
+
+        <!-- Dynamic Tabs -->
+
+        {% for content_type in content_types %}
+           
+            <div class="tab-pane fade"  id="content-{{ content_type.id }}" >
+                <ul class="list-group">
+                    {% for dynamic in content_type.dynamic_set.all %}
+                       
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>{{ dynamic.title }}</span>
+                            <div>
+                                <a href="{% url 'edit_dynamic' dynamic.id %}" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <form action="/back/delete-dynamic/{{dynamic.id}}" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="deleteNotice({{ gallery.id }})">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                               
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No content available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+
+        <!-- end of dynamic tabs-->
     </div>
 </div>
 
@@ -152,5 +191,21 @@
     </div>
 </div>
 
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("form").forEach(function (form) {
+            form.addEventListener("submit", function (event) {
+                if (!confirm("Are you sure you want to delete?")) {
+                    event.preventDefault(); 
+                } else{
+                    event.preventDefault();
+                    submit(this,'','/back/dashboard');
+                }
+            });
+        });
+    });
+
+</script>
 
 {% endblock %}

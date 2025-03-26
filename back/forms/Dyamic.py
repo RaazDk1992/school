@@ -6,6 +6,7 @@ from django_ckeditor_5.widgets import CKEditor5Widget
 class DynamicForm(forms.ModelForm):
     class Meta:
         model = Dynamic
+        exclude = ['owner']
         fields = '__all__'
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Content Title'}),

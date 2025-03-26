@@ -6,6 +6,7 @@ class GalleryForm(forms.ModelForm):
     class Meta:
         model = Gallery
         fields = '__all__'
+        exclude = ['owner']
         widgets={
             'galleryName':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gallery Name'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'})

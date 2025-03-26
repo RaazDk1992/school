@@ -5,6 +5,7 @@ from django.forms import modelformset_factory
 class EditGalleryForm(forms.ModelForm):
     class Meta:
         model = Gallery
+        exclude = ['owner']
         fields = '__all__'
         widgets={
             'galleryName':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Gallery Name'}),
@@ -14,6 +15,7 @@ class EditGalleryForm(forms.ModelForm):
 class EditGalleryImageForm(forms.ModelForm):
     class Meta:
         model = Image
+        exclude = ['owner']
         fields =['image']
         widgets ={
             'image':forms.ClearableFileInput(attrs={'class':'form-control'})

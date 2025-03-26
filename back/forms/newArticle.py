@@ -11,6 +11,7 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = '__all__'
+        exclude = ['owner']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter menu item name'}),
             'body':CKEditor5Widget(
