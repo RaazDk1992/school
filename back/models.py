@@ -140,7 +140,9 @@ class Dynamic(models.Model):
     image = models.ImageField(upload_to="dynamic/images/", null=True,blank=True)
     document = models.FileField(upload_to='dynamic/files/',null=True,blank=True)
     path = models.SlugField(unique=True, blank=True)
+    pop = models.BooleanField(default=False)
     owner = models.ForeignKey(User,on_delete=models.CASCADE)
+
     def save(self, *args, **kwargs):
         if not self.path:
             self.path = slugify(self.title)

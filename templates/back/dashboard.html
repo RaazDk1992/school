@@ -71,6 +71,12 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="tab" href="#gallery">Gallery</a>
         </li>
+        <li>
+            <a class="nav-link" data-bs-toggle="tab" href="#contentTypes">ContentTypes</a>
+        </li>
+        <li>
+            <a class="nav-link" data-bs-toggle="tab" href="#menu">Menu</a>
+        </li>
 
         {% for content_type in content_types %}
             <li class="nav-item" >
@@ -79,6 +85,8 @@
                 </a>
             </li>
         {% endfor %}
+
+       
     </ul>
 
     <div class="tab-content border p-3">
@@ -156,6 +164,7 @@
         {% endif %}
         </div>
 
+
         <!-- Dynamic Tabs -->
 
         {% for content_type in content_types %}
@@ -187,6 +196,72 @@
         {% endfor %}
 
         <!-- end of dynamic tabs-->
+
+
+        <!-- Menu Items -->
+        <div id="menu" class="tab-pane fade">
+            <h4>Menu</h4>
+            {% if menu_list %}
+               
+            {% for menu in menu_list %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ menu.menuItem }}</span>
+                <div>
+                    <a href="{% url 'edit_menu' menu.id %}" class="btn btn-sm btn-warning">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <!-- Delete section-->
+                    <form action="/back/delete-menu/{{menu.id}}" style="display:inline;" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </form>
+                    <!-- End of delete-->
+                </div>
+            </li>
+            {% endfor %}
+            {% else %}
+                <p>No Menu Added</p>
+            {% endif %}
+        </div>
+
+        <!-- end of menuItems -->
+            
+        <div id="contentTypes" class="tab-pane fade">
+            <h4>ContentTypes</h4>
+            {% if content_types %}
+            {% for item in content_types %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ item.contentType }}</span>
+                <div>
+                    <a href="{% url 'edit-content-type' item.id %}" class="btn btn-sm btn-warning">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <!-- Delete section-->
+                    <form action="/back/delete-menu/{{item.id}}" style="display:inline;" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </form>
+                    <!-- End of delete-->
+                </div>
+            </li>
+            {% endfor %}
+            {% else %}
+                <p>No ContentType added.</p>
+            {% endif %}
+        </div>
+
+        <!-- end of contentTypes -->
+
+        
+
+
+        
+
+
     </div>
 </div>
 
@@ -217,8 +292,16 @@
                 }
             });
         });
+
+
+        {%if popups%}
+        $('#popup').modal('show'); 
+        {%endif%}
     });
 
+  
 </script>
 
+
+{% include "back/pop.html" %}
 {% endblock %}

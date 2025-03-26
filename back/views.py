@@ -13,7 +13,7 @@ from back.forms.editGallery import EditGalleryForm,EditGalleryImageFormset
 from back.forms.Events import EventsForm
 from back.forms.Testimonial import TestimonialForm
 from back.forms.newslider import SliderForm,SliderFormSet
-from back.models import Image,Gallery, Dynamic,Article,Notices,NoticeDocuments,NoticeImages,ContentType,Events
+from back.models import Image,Gallery, Dynamic,Article,Notices,NoticeDocuments,NoticeImages,ContentType,Events,Menu
 from django.db.models import Prefetch
 from collections import defaultdict
 import os
@@ -49,6 +49,8 @@ def loadDashboard(request):
             article_list = Article.objects.all()
             notice_list = Notices.objects.all()
             gallery_list = Gallery.objects.all()
+            menu_items = Menu.objects.all()
+            popups = Dynamic.objects.filter(pop=True)
 
             ## get dynamically added elements
            
@@ -59,8 +61,11 @@ def loadDashboard(request):
                 'article_list':article_list,
                 'notice_list': notice_list,
                 'gallery_list':gallery_list,
-                'content_types':contentTypes
+                'content_types':contentTypes,
+                'menu_list':menu_items,
+                'popups':popups
             }
+        
             return render(request,"back/dashboard.html",context)
         else:
             return redirect('login')
@@ -259,7 +264,9 @@ def addMenu(request):
     if request.method == 'POST':
         if menu_form.is_valid() and submenu_formset.is_valid():
             print("Received POST data and validated")
-            menu = menu_form.save()
+            menu = menu_form.save(commit=False)
+            menu.owner = request.user
+            menu.save()
             submenu_instances = submenu_formset.save(commit=False)
             for submenu in submenu_instances:
                 submenu.menuRef = menu
@@ -372,6 +379,18 @@ def addSlider(request):
     blank_formset = SliderFormSet()
     return render(request, 'back/addslider.html', {'formset': blank_formset})
 
+
+# edit menu
+def editMenu(request,id):
+    return null
+
+def deleteMenu(request,id):
+    return null
+def editContentType(request,id):
+    return null
+
+def deleteContentType(request,id):
+    return null
 # Method to  add new article, if user is authenticated, check if form is valid, otherwise goto authentication
 def addArticle(request):
     if request.user.is_authenticated:
