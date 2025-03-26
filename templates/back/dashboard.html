@@ -239,7 +239,7 @@
                         <i class="fa fa-edit"></i> Edit
                     </a>
                     <!-- Delete section-->
-                    <form action="/back/delete-menu/{{item.id}}" style="display:inline;" method="POST">
+                    <form action="/back/delete-content-type/{{item.id}}" style="display:inline;" method="POST">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-danger">
                             <i class="fa fa-trash"></i> Delete

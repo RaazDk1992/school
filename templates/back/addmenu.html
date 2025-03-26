@@ -29,7 +29,11 @@
 
             <!-- Active Checkbox -->
             <div class="col-md-4 d-flex align-items-center">
-                <input type="checkbox" class="form-check-input me-2" id="{{ form.is_active.id_for_label }}" name="is_active">
+                <input type="checkbox" class="form-check-input me-2" 
+                    id="{{ form.is_active.id_for_label }}" 
+                    name="is_active" 
+                    {% if form.is_active.value == 'on' or form.is_active.value == True %} checked {% endif %} />
+
                 <label for="{{ form.is_active.id_for_label }}" class="form-check-label">Active</label>
             </div>
 

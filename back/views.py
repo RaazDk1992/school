@@ -382,15 +382,73 @@ def addSlider(request):
 
 # edit menu
 def editMenu(request,id):
-    return null
+    
+   if request.user.is_authenticated:
+       menu = get_object_or_404(Menu,id=id)
+
+       if request.method =="POST":
+           form  = MenuForm(request.POST,request.FILES, instance=menu)
+           if form.is_valid():
+               form.save()
+               return JsonResponse({'status':'success','message':'Menu updated !!'},status=200)
+           else:
+               return JsonResponse({'status':'fail','message':'Menu update failed!!','error':form.errors},status=401)
+       else:
+           form = MenuForm(instance=menu)
+           return render(request,'back/addmenu.html',{'form':form})
+
+   else:
+       return redirect('login')
+
 
 def deleteMenu(request,id):
-    return null
+    
+    if request.user.is_authenticated:
+        menu = get_object_or_404(Menu,id=id)
+        if request.method == "POST":
+            if menu.owner != request.user:
+                return JsonResponse({'status':'fail','message':'You are not allowed!!'},status=401)
+            else:
+                menu.delete()
+                return JsonResponse({'status':'success','message':'Deletion Successful'},status=200)
+        else:
+            return JsonResponse({'status':'fail','message':'Invalid request'},status=401)
+    else:
+        return redirect('login')
+    
 def editContentType(request,id):
-    return null
+    
+    if request.user.is_authenticated:
+        contentType = get_object_or_404(ContentType,id=id)
+        
+        if request.method == "POST":
+            form = ContentTypeForm(request.POST,request.FILES,instance=contentType)
+            if form.is_valid():
+                form.save()
+                return JsonResponse({'status':'success','message':'ContentType updated!!'},status=200)
+            else :
+                return JsonResponse({'status':'fail','message':'could not update contentType','error':form.errors},status=401)
+        else :
+            form = ContentTypeForm(instance=contentType)
+            return render(request,'back/contentType.html',{'form':form})
+    else:
+        return redirect('login')
 
 def deleteContentType(request,id):
-    return null
+    
+    if request.user.is_authenticated:
+        contentType = get_object_or_404(ContentType,id=id)
+        if request.method == "POST":
+                if contentType.owner != request.user:
+                    return JsonResponse({'status':'fail','message':'You are not authorized to delete this'},status=401)
+                else :
+                    contentType.delete()
+                    return JsonResponse({'status':'success','message':'Item deleted'},status=200)
+        else:
+            return JsonResponse({'status':'fail','message':'Invalid requests'},status=401)
+    else:
+        return redirect('login')
+    
 # Method to  add new article, if user is authenticated, check if form is valid, otherwise goto authentication
 def addArticle(request):
     if request.user.is_authenticated:
