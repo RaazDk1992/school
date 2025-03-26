@@ -233,7 +233,9 @@ def addGallery(request):
     if request.method == "POST":
         if gallery_form.is_valid() and gallery_image_formset.is_valid():
             # Save the gallery first
-            gallery_instance = gallery_form.save()
+            gallery_instance = gallery_form.save(commit=False)
+            gallery_instance.owner = request.user
+            gallery_instance.save()
 
             images_instances = gallery_image_formset.save(commit=False)
             if not images_instances:
@@ -245,7 +247,8 @@ def addGallery(request):
                     # Create a new image object for each uploaded file
                     gallery_image = Image.objects.create(
                         image=image_file,
-                        gallery=gallery_instance
+                        gallery=gallery_instance,
+                        owner = request.user
                     )
                     gallery_image.save()  # Save the gallery image instance
 
@@ -269,7 +272,9 @@ def createContent(request):
         if request.method =="POST":
             form = DynamicForm(request.POST,request.FILES)
             if form.is_valid():
-                form.save()
+                instance = form.save(commit=False)
+                instance.owner = request.user
+                instance.save()
                 return JsonResponse({'status':'success','message':'Item added'},status=200)
             else:
                 return JsonResponse({'status':'fail','message':f'Could not be created{form.errors}'},status=400)
@@ -284,7 +289,9 @@ def addContentType(request):
         if request.method =="POST":
             frm = ContentTypeForm(request.POST or None)
             if frm.is_valid():
-                frm.save()
+                instance = frm.save(commit=False)
+                instance.owner = request.user
+                instance.save()
                 return JsonResponse({'status':'success','message':'contentType added!!'},status=200)
             else:
                 return JsonResponse({'status':'failed','message':'failed to add contentType','error':frm.errors})
@@ -296,11 +303,7 @@ def addContentType(request):
         
 
     
-def dynamicView(request):
 
-    path = request.path.rstrip('/').split('/')[-1] 
-    print(path)
-    #return render(request,'back/login.html')
 
 def addSlider(request):
     if not request.user.is_authenticated:
@@ -328,7 +331,9 @@ def addArticle(request):
         if request.method =="POST":
             form = ArticleForm(request.POST,request.FILES)
             if form.is_valid():
-                article = form.save()
+                article = form.save(commit=False)
+                article.owner = request.user
+                article.save()
                 
                 return JsonResponse({"message":f"Article {article.title} published!!"},status=200)
             else:
@@ -358,16 +363,20 @@ def addNotice(request):
             notice_document_formset = NoticeDocumentFormSet(request.POST or None,request.FILES or None)
             if form.is_valid() and notice_image_formset.is_valid() and notice_document_formset.is_valid():
                 ##Save the form
-                notice_instance = form.save()
+                notice_instance = form.save(commit=False)
+                notice_instance.owner = request.user
+                notice_instance.save()
                 images_instances = notice_image_formset.save(commit=False)
                 document_instances = notice_document_formset.save(commit=False)
 
                 ## As actual formset is not used, make a placeholder
                 if not images_instances:
                     images_instances = [NoticeImages()]
+                    
 
                 if not document_instances:
                     document_instances = [NoticeDocuments()]
+                  
 
                 for idx, image in enumerate(images_instances):
                     image_files = request.FILES.getlist(f'image_{idx+1}')  
@@ -375,15 +384,19 @@ def addNotice(request):
                         # Create a new image object for each uploaded file
                         notice_image = NoticeImages.objects.create(
                             image=image_file,
-                            notice=notice_instance
+                            notice=notice_instance,
+                            owner = request.user
+                            
                         )
-                        notice_image.save()  
+                        notice_image.save()
+                         
                     for idx, documents in enumerate(document_instances):
                         docs = request.FILES.getlist(f'files_{idx+1}')
                         for doc in docs:
                             notice_docs = NoticeDocuments.objects.create(
                                 notice = notice_instance,
-                                document = doc
+                                document = doc,
+                                owner = request.user
                             )
                             notice_docs.save()
                 return JsonResponse({"status":"Success","message":f"Notice :{notice_instance.title} Saved!!"},status=200)
@@ -416,7 +429,9 @@ def addMessage(request):
         if request.method =="POST":
             form = MessageForm(request.POST,request.FILES)
             if form.is_valid():
-                messagef = form.save()
+                messagef = form.save(commit=False)
+                messagef.owner  = request.user
+                messagef.save()
                 return JsonResponse({'status':'success','message':'Message added successfully!!'},status=200)
             else:
                 return JsonResponse({'status':'fail','message':'Could not publish  message','error':form.errors},status=400)
