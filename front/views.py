@@ -1,6 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render,get_object_or_404
-from back.models import Sliders,Message,Notices,Gallery,Image,Events,Menu,ContentType,Dynamic
+from back.models import Sliders,Message,Notices,Gallery,Image,Events,Menu,ContentType,Dynamic,Article
 from django.db.models import Prefetch
 
 def index(request):
@@ -25,6 +25,13 @@ def loadNotices(request):
     }
     return render(request,"front\\listview.html",context)
 
+
+def articles(request):
+    article = Article.objects.all()
+    return render(request,'front/listview.html',{'list':article,'base':'article'})
+def articleDetails(request,id):
+    article  = Article.objects.get(id=id)
+    return render(request,'front/detailed.html',{'content':article})
 
 def noticeDetails(request,noticeId):
     notice = get_object_or_404(Notices.objects.prefetch_related('noticeimages_set', 'noticedocuments_set'), id=noticeId)

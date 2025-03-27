@@ -96,6 +96,11 @@ class Article(models.Model):
     body = models.TextField()
     image = models.ImageField(upload_to='articles/', null=True, blank=True)
     owner = models.ForeignKey(User,on_delete=models.CASCADE)
+    path = models.SlugField(unique=True, blank=True)
+    def save(self, *args, **kwargs):
+        if not self.path:
+            self.path = slugify(self.title)
+        super().save(*args,**kwargs)
     def __str__(self):
         return self.title
 
