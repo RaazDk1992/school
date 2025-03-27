@@ -5,6 +5,7 @@ urlpatterns =[
     path('login/',views.userLogin,name="login"),
     path("createuser/",views.createUser, name="createuser"),
     path('dashboard/',views.loadDashboard,name="dashboard"),
+    path('',views.loadDashboard,name="dashboard"),
     path('newarticle/',views.addArticle,name="newArticle"),
     path('newnotice/',views.addNotice,name="addnotice"),
     path('edit-notice/<int:notice_id>/', views.editNotice, name='edit_notice'),

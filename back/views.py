@@ -572,6 +572,4 @@ def createUser(request):
 
 
 
-  
-
 
